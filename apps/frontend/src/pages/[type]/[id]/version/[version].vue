@@ -2233,13 +2233,13 @@ export default defineNuxtComponent({
               this.$refs.uploading_modal.proceed();
               this.$notify({
                 group: "main",
-                title: `${error.error}`,
-                text: `${error.description}`,
+                title: error?.error || "上传失败",
+                text: error?.description || "文件上传超时或网络错误，请重试",
                 type: "error",
               });
             },
           });
-          // this.$refs.uploading_modal.proceed()
+          this.$refs.uploading_modal.proceed();
         }
 
         const disks = [];
@@ -2342,10 +2342,11 @@ export default defineNuxtComponent({
         );
       } catch (err) {
         console.log(err);
+        this.$refs.uploading_modal?.proceed();
         this.$notify({
           group: "main",
           title: "发生错误",
-          text: err.data.description,
+          text: err?.data?.description || "请求超时或网络错误，请重试",
           type: "error",
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -2860,7 +2861,6 @@ export default defineNuxtComponent({
         link.target_version_id ||
         link.originalVersion?.id ||
         `link_${this.versionLinks.indexOf(link)}`;
-      console.log("getLinkId返回:", id, "for link:", link); // 调试信息
       return id;
     },
   },

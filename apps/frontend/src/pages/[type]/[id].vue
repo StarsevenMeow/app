@@ -1630,6 +1630,8 @@
             </div>
           </div>
         </div>
+        <!-- Google AdSense -->
+<!--        <AdUnit slot="7766138161" class="card" />-->
       </div>
       <div class="normal-page__content">
         <div class="overflow-x-auto">
@@ -1736,6 +1738,7 @@ import {
   formatDateTime,
 } from "@modrinth/utils";
 import dayjs from "dayjs";
+import AdUnit from "~/components/ui/AdUnit.vue";
 import Badge from "~/components/ui/Badge.vue";
 import NavTabs from "~/components/ui/NavTabs.vue";
 import NavStack from "~/components/ui/NavStack.vue";

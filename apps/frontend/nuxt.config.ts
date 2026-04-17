@@ -62,6 +62,11 @@ export default defineNuxtConfig({
         {
           children: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "vfqf1ute5s");`,
         },
+        {
+          src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2727958509575372",
+          async: true,
+          crossorigin: "anonymous",
+        },
       ],
       link: [
         // The type is necessary because the linter can't always compare this very nested/complex type on itself
@@ -424,6 +429,16 @@ export default defineNuxtConfig({
   },
   nitro: {
     moduleSideEffects: ["@vintl/compact-number/locale-data"],
+    hooks: {
+      compiled() {
+        // Fix: Nitro doesn't copy tslib/modules/index.js but Node 22 resolves to it via exports.import.node
+        const tslibModulesDir = resolve(__dirname, ".output/server/node_modules/tslib/modules");
+        const tslibSource = resolve(__dirname, "../../node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/modules/index.js");
+        fs.mkdir(tslibModulesDir, { recursive: true })
+          .then(() => fs.copyFile(tslibSource, resolve(tslibModulesDir, "index.js")))
+          .catch(() => {});
+      },
+    },
   },
   devtools: {
     enabled: true,
