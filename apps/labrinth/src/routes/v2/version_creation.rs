@@ -146,29 +146,15 @@ pub async fn version_create(
                     .flatten()
                     .collect::<Vec<_>>();
 
-                // 复制项目的示例版本的侧类型。
-                // 如果没有版本存在，则默认为所有 false。
-                // 这本质上是有损的，但对此无能为力，因为侧类型不再与项目关联，
-                // 因此无法轻松访问“缺失”的那些，并且版本确实需要显式设置这些字段。
-                let side_type_loader_field_names = [
-                    "singleplayer",      // 单人游戏
-                    "client_and_server", // 客户端和服务器
-                    "client_only",       // 仅客户端
-                    "server_only",       // 仅服务器
-                ];
-
-                // 检查 loader_fields_aggregate 是否包含这些侧类型中的任何一个
-                // 我们假设这四个字段是关联在一起的。
+                // 跟进上游 ef04dcc37：v3 已用 environment 单字段取代旧 4 个 bool side type
+                // 如果当前 loader 绑定 environment 字段，从已有版本复制 environment 值
+                // （v2 版本创建接口不直接传 client_side/server_side，靠项目级 example version 派生）
                 if loader_fields_aggregate
                     .iter()
-                    .any(|f| side_type_loader_field_names.contains(&f.as_str()))
+                    .any(|f| f.as_str() == "environment")
                 {
-                    // 如果是这样，我们获取项目的示例版本的字段，并设置侧类型以匹配。
-                    fields.extend(
-                        side_type_loader_field_names
-                            .iter()
-                            .map(|f| (f.to_string(), json!(false))),
-                    );
+                    // 默认 unknown
+                    fields.insert("environment".to_string(), json!("unknown"));
                     if let Some(example_version_fields) =
                         get_example_version_fields(
                             legacy_create.project_id,
@@ -177,22 +163,15 @@ pub async fn version_create(
                         )
                         .await?
                     {
-                        fields.extend(
-                            example_version_fields.into_iter().filter_map(
-                                |f| {
-                                    if side_type_loader_field_names
-                                        .contains(&f.field_name.as_str())
-                                    {
-                                        Some((
-                                            f.field_name,
-                                            f.value.serialize_internal(),
-                                        ))
-                                    } else {
-                                        None
-                                    }
-                                },
-                            ),
-                        );
+                        if let Some(env_field) = example_version_fields
+                            .into_iter()
+                            .find(|f| f.field_name == "environment")
+                        {
+                            fields.insert(
+                                "environment".to_string(),
+                                env_field.value.serialize_internal(),
+                            );
+                        }
                     }
                 }
                 // 通过文件扩展名预测处理项目类型
