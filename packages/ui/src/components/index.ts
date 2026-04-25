@@ -28,6 +28,9 @@ export { default as PopoutMenu } from './base/PopoutMenu.vue'
 export { default as ProjectCard } from './base/ProjectCard.vue'
 export { default as ProjectPageVersions } from './base/ProjectPageVersions.vue'
 export { default as ProjectSettingsEnvSelector } from './base/ProjectSettingsEnvSelector.vue'
+
+// Project settings 子模块（含 ENVIRONMENTS_COPY）
+export * from './project/settings'
 export { default as ScrollablePanel } from './base/ScrollablePanel.vue'
 export { default as Slider } from './base/Slider.vue'
 export { default as StatItem } from './base/StatItem.vue'

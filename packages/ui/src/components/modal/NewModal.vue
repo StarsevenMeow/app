@@ -1,48 +1,55 @@
 <template>
-  <div
-    v-if="open"
-    :style="`${mouseX !== -1 ? `--_mouse-x: ${mouseX};` : ''} ${mouseY !== -1 ? `--_mouse-y: ${mouseY};` : ''}`"
-  >
+  <Teleport to="body">
     <div
-      :class="{ shown: visible }"
-      class="tauri-overlay"
-      data-tauri-drag-region
-      @click="() => (closable ? hide() : {})"
-    />
-    <div
-      :class="{
-        shown: visible,
-        noblur: props.noblur,
-        danger: danger,
-      }"
-      class="modal-overlay"
-      @click="() => (closable ? hide() : {})"
-    />
-    <div class="modal-container experimental-styles-within" :class="{ shown: visible }">
-      <div class="modal-body flex flex-col bg-bg-raised rounded-2xl">
-        <div
-          class="grid grid-cols-[auto_min-content] items-center gap-12 p-6 border-solid border-0 border-b-[1px] border-button-bg max-w-full"
-        >
-          <div class="flex text-wrap break-words items-center gap-3 min-w-0">
-            <slot name="title">
-              <span v-if="header" class="text-lg font-extrabold text-contrast">
-                {{ header }}
-              </span>
-            </slot>
+      v-if="open"
+      :style="`${mouseX !== -1 ? `--_mouse-x: ${mouseX};` : ''} ${mouseY !== -1 ? `--_mouse-y: ${mouseY};` : ''}`"
+    >
+      <div
+        :class="{ shown: visible }"
+        class="tauri-overlay"
+        data-tauri-drag-region
+        @click="() => (closable ? hide() : {})"
+      />
+      <div
+        :class="{
+          shown: visible,
+          noblur: props.noblur,
+          danger: danger,
+        }"
+        class="modal-overlay"
+        @click="() => (closable ? hide() : {})"
+      />
+      <div class="modal-container experimental-styles-within" :class="{ shown: visible }">
+        <div class="modal-body flex flex-col bg-bg-raised rounded-2xl">
+          <div
+            class="grid grid-cols-[auto_min-content] items-center gap-12 p-6 border-solid border-0 border-b-[1px] border-button-bg max-w-full"
+          >
+            <div class="flex text-wrap break-words items-center gap-3 min-w-0">
+              <slot name="title">
+                <span v-if="header" class="text-lg font-extrabold text-contrast">
+                  {{ header }}
+                </span>
+              </slot>
+            </div>
+            <ButtonStyled v-if="closable" circular>
+              <button @click="hide" aria-label="Close">
+                <XIcon aria-hidden="true" />
+              </button>
+            </ButtonStyled>
           </div>
-          <ButtonStyled v-if="closable" circular>
-            <button @click="hide" aria-label="Close">
-              <XIcon aria-hidden="true" />
-            </button>
-          </ButtonStyled>
-        </div>
-        <div class="overflow-y-auto p-6">
-          <slot> You just lost the game.</slot>
+          <div class="overflow-y-auto p-6">
+            <slot> You just lost the game.</slot>
+          </div>
+          <div
+            v-if="$slots.actions"
+            class="px-6 pb-6 pt-2 border-solid border-0 border-t-[1px] border-button-bg"
+          >
+            <slot name="actions" />
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div v-else></div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -140,6 +147,7 @@ function handleKeyDown(event: KeyboardEvent) {
 </script>
 
 <style lang="scss" scoped>
+// 提升到 navmenu (.site-header z-index:100, .mobile-navbar z-index:200) 之上
 .tauri-overlay {
   position: fixed;
   visibility: hidden;
@@ -147,7 +155,7 @@ function handleKeyDown(event: KeyboardEvent) {
   left: 0;
   width: 100%;
   height: 100px;
-  z-index: 20;
+  z-index: 1001;
 
   &.shown {
     opacity: 1;
@@ -158,7 +166,7 @@ function handleKeyDown(event: KeyboardEvent) {
 .modal-overlay {
   position: fixed;
   inset: -5rem;
-  z-index: 19;
+  z-index: 1000;
   opacity: 0;
   transition: all 0.2s ease-out;
   background: linear-gradient(to bottom, rgba(29, 48, 43, 0.52) 0%, rgba(14, 21, 26, 0.95) 100%);
@@ -193,7 +201,7 @@ function handleKeyDown(event: KeyboardEvent) {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 21;
+  z-index: 1002;
   visibility: hidden;
   pointer-events: none;
   transform: translate(
