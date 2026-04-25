@@ -460,6 +460,55 @@ export namespace Labrinth {
         file_type?: FileType
       }
 
+      // ===== BBSMC 自定义类型 =====
+
+      /**
+       * BBSMC 网盘平台标识
+       * - quark: 夸克网盘
+       * - xunlei: 迅雷网盘
+       * - baidu: 百度网盘
+       * - modrinth: Modrinth 转载链接
+       * - curseforge: CurseForge 转载链接
+       */
+      export type DiskPlatform = 'quark' | 'xunlei' | 'baidu' | 'modrinth' | 'curseforge'
+
+      /**
+       * BBSMC 网盘下载链接（与后端 QueryDisk struct 对应）
+       */
+      export interface QueryDisk {
+        platform: DiskPlatform | string
+        url: string
+      }
+
+      /**
+       * BBSMC 翻译/链接关系（仅 language 类型版本使用）
+       * 与后端 VersionLink struct 对应
+       */
+      export interface VersionLink {
+        /** 被链接（被翻译）的源版本 ID */
+        joining_version_id: string
+        /** 链接类型，目前主要是 'translation' */
+        link_type: string
+        /** 语言代码：zh_CN / zh_TW / en_US / ja_JP / ko_KR */
+        language_code: string
+        /** 关系说明 */
+        description?: string
+        /** 审核状态（响应时存在） */
+        approval_status?: string
+        /** 沟通线程 ID（响应时存在） */
+        thread_id?: string
+      }
+
+      /**
+       * BBSMC 资源类型分类
+       * - software: 软件资源
+       * - minecraft: Minecraft 资源
+       * - language: 汉化包
+       */
+      export type VersionType = 'software' | 'minecraft' | 'language'
+
+      // ===== End BBSMC 自定义类型 =====
+
       export interface Version {
         name: string
         version_number: string
@@ -478,6 +527,14 @@ export namespace Labrinth {
         files: VersionFile[]
         environment?: Labrinth.Projects.v3.Environment
         mrpack_loaders?: string[]
+        // BBSMC 自定义字段
+        type?: VersionType
+        disk_only?: boolean
+        disk_urls?: QueryDisk[]
+        version_links?: VersionLink[]
+        /** 反向：哪些其他版本翻译了本版本（只读，由后端聚合） */
+        translated_by?: VersionLink[]
+        is_modpack?: boolean
       }
 
       export interface DraftVersionFile {
@@ -492,6 +549,18 @@ export namespace Labrinth {
         existing_files?: VersionFile[]
         version_id?: string
         environment?: Labrinth.Projects.v3.Environment
+        // BBSMC 自定义字段
+        type?: VersionType | null
+        disk_only?: boolean
+        disk_urls?: QueryDisk[]
+        version_links?: VersionLink[]
+        is_modpack?: boolean
+        /** 5 个网盘 input 临时字段，提交时由 client 聚合为 disk_urls */
+        quark_disk?: string
+        xunlei_disk?: string
+        baidu_disk?: string
+        modrinth?: string
+        curseforge?: string
       }
 
       export interface CreateVersionRequest {
@@ -512,10 +581,21 @@ export namespace Labrinth {
         requested_status?: 'listed' | 'archived' | 'draft' | 'unlisted' | null
         project_id: string
         file_parts: string[]
-        primary_file?: string
+        primary_file?: string | null | string[]
         file_types?: Record<string, Labrinth.Versions.v3.FileType | null>
         environment?: Labrinth.Projects.v3.Environment
         mrpack_loaders?: string[]
+        // BBSMC 自定义字段（v3 InitialVersionData 显式接收的）
+        disk_only?: boolean
+        disk_urls?: QueryDisk[] | null
+        version_links?: VersionLink[]
+        /**
+         * 注意：以下字段在 v3 接口不被接受，整合包/软件/汉化通过 loaders 字段表达：
+         * - is_modpack 由前端转换为 loaders=['mrpack'] + mrpack_loaders 字段
+         * - type='software' 由前端转换为 loaders=['software'] + software_loaders 字段
+         * - type='language' 由前端转换为 loaders=['language']
+         * 这里仅保留方便编辑/汇总展示，不进入实际请求体。
+         */
       }
 
       export type ModifyVersionRequest = Partial<
