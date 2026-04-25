@@ -91,7 +91,28 @@ pub trait Validator: Sync {
     ) -> Result<ValidationResult, ValidationError>;
 }
 
-static ALWAYS_ALLOWED_EXT: &[&str] = &["zip", "txt"];
+static ALWAYS_ALLOWED_EXT: &[&str] = &[
+    "zip",
+    "txt",
+    // 地图板块支持的单文件格式
+    "schem",
+    "schematic",
+    "litematic",
+    "nbt",
+    "mcstructure",
+    "mcworld",
+    "mctemplate",
+];
+
+/// 这些后缀的文件不是 zip 容器，跳过 ZipArchive 解析直接放过
+static NON_ZIP_ALLOWED_EXT: &[&str] = &[
+    "txt",
+    "schem",
+    "schematic",
+    "litematic",
+    "nbt",
+    "mcstructure",
+];
 
 static VALIDATORS: &[&dyn Validator] = &[
     &ModpackValidator,
@@ -193,6 +214,11 @@ async fn validate_minecraft_file(
     file_type: Option<FileType>,
 ) -> Result<ValidationResult, ValidationError> {
     actix_web::web::block(move || {
+        // 单文件二进制格式（litematic / nbt / schem 等）不是 zip 容器，跳过解析直接放过
+        if NON_ZIP_ALLOWED_EXT.contains(&&*file_extension) {
+            return Ok(ValidationResult::Pass);
+        }
+
         let reader = Cursor::new(data);
         let mut zip = ZipArchive::new(reader)?;
 
