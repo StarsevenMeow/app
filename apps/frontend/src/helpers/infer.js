@@ -278,7 +278,7 @@ export const inferVersionInfo = async function (rawFile, project, gameVersions) 
         loaders: ["velocity"],
       };
     },
-    // Modpacks
+    // Modpacks - Modrinth .mrpack / .zip 格式
     "modrinth.index.json": (file) => {
       const metadata = JSON.parse(file);
 
@@ -304,8 +304,12 @@ export const inferVersionInfo = async function (rawFile, project, gameVersions) 
         game_versions: gameVersions
           .filter((x) => x.version === metadata.dependencies.minecraft)
           .map((x) => x.version),
+        // BBSMC: 标识整合包（含 modrinth.index.json 的 .mrpack 或 .zip）
+        is_modpack: true,
+        project_type: "modpack",
       };
     },
+    // Modpacks - CurseForge .zip 格式
     "manifest.json": (file) => {
       const metadata = JSON.parse(file);
       const loaders = [];
@@ -331,6 +335,9 @@ export const inferVersionInfo = async function (rawFile, project, gameVersions) 
         game_versions: gameVersions
           .filter((x) => x.version === metadata.minecraft.version)
           .map((x) => x.version),
+        // BBSMC: 标识整合包（含 manifest.json 的 CurseForge .zip）
+        is_modpack: true,
+        project_type: "modpack",
       };
     },
 

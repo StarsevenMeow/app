@@ -1,88 +1,162 @@
 <template>
   <div class="flex w-full max-w-full flex-col gap-6">
-    <div class="flex flex-col gap-4">
-      <span class="font-semibold text-contrast">添加依赖</span>
-      <div class="border-surface-5 flex flex-col gap-3 rounded-2xl border border-solid p-4">
-        <div class="grid gap-2.5">
-          <span class="font-semibold text-contrast">项目 <span class="text-red">*</span></span>
-          <ModSelect v-model="newDependencyProjectId" />
-        </div>
-
-        <template v-if="newDependencyProjectId">
+    <!-- BBSMC: language 类型显示翻译链接管理 UI -->
+    <template v-if="isLanguageVersion">
+      <div class="flex flex-col gap-4">
+        <span class="font-semibold text-contrast">翻译版本链接</span>
+        <div class="border-surface-5 flex flex-col gap-3 rounded-2xl border border-solid p-4">
           <div class="grid gap-2.5">
-            <span class="font-semibold text-contrast"> 版本 </span>
-            <Combobox
-              v-model="newDependencyVersionId"
-              placeholder="选择版本"
-              :options="[{ label: '任意版本', value: null }, ...newDependencyVersions]"
-              :searchable="true"
+            <span class="font-semibold text-contrast">
+              要翻译的源版本 ID <span class="text-red">*</span>
+            </span>
+            <input
+              v-model="linkTargetId"
+              type="text"
+              class="rounded-lg border border-solid border-surface-5 bg-button-bg px-3 py-2 text-sm"
+              placeholder="请输入要翻译的版本 ID"
             />
           </div>
-
           <div class="grid gap-2.5">
-            <span class="font-semibold text-contrast"> 依赖关系 </span>
+            <span class="font-semibold text-contrast">翻译语言 <span class="text-red">*</span></span>
             <Combobox
-              v-model="newDependencyType"
-              placeholder="选择依赖类型"
-              :options="[
-                { label: '必需', value: 'required' },
-                { label: '可选', value: 'optional' },
-                { label: '不兼容', value: 'incompatible' },
-                { label: '内嵌', value: 'embedded' },
-              ]"
+              v-model="linkLanguageCode"
+              placeholder="选择翻译语言"
+              :options="languageOptions"
             />
           </div>
-
-          <ButtonStyled>
+          <div class="grid gap-2.5">
+            <span class="font-semibold text-contrast">说明（可选）</span>
+            <input
+              v-model="linkDescription"
+              type="text"
+              class="rounded-lg border border-solid border-surface-5 bg-button-bg px-3 py-2 text-sm"
+              placeholder="翻译说明..."
+            />
+          </div>
+          <ButtonStyled color="brand">
             <button
               class="self-start"
-              :disabled="!newDependencyProjectId"
-              @click="
-                () =>
-                  addDependency(
-                    toRaw({
-                      project_id: newDependencyProjectId,
-                      version_id: newDependencyVersionId || undefined,
-                      dependency_type: newDependencyType,
-                    }),
-                  )
-              "
+              :disabled="!linkTargetId || !linkLanguageCode"
+              @click="handleAddVersionLink"
             >
-              添加依赖
+              添加链接
             </button>
           </ButtonStyled>
-        </template>
+        </div>
       </div>
-    </div>
 
-    <SuggestedDependencies
-      :suggested-dependencies="suggestedDependencies"
-      @on-add-suggestion="handleAddSuggestedDependency"
-    />
-
-    <div v-if="addedDependencies.length" class="flex flex-col gap-4">
-      <span class="font-semibold text-contrast">已添加的依赖</span>
-      <div class="5 flex flex-col gap-2">
-        <template v-for="(dependency, index) in addedDependencies">
-          <AddedDependencyRow
-            v-if="dependency"
-            :key="index"
-            :project-id="dependency.projectId"
-            :name="dependency.name"
-            :icon="dependency.icon"
-            :dependency-type="dependency.dependencyType"
-            :version-name="dependency.versionName"
-            @remove="() => removeDependency(index)"
-          />
-        </template>
-        <span v-if="!addedDependencies.length"> 尚未添加依赖。 </span>
+      <div v-if="(draftVersion.version_links?.length ?? 0) > 0" class="flex flex-col gap-4">
+        <span class="font-semibold text-contrast">已添加的翻译链接</span>
+        <div class="flex flex-col gap-2">
+          <div
+            v-for="(link, index) in draftVersion.version_links"
+            :key="`vl-${index}`"
+            class="border-surface-5 flex items-center justify-between gap-2 rounded-xl border border-solid bg-button-bg p-3"
+          >
+            <div class="flex flex-col">
+              <span class="font-semibold">{{ langLabel(link.language_code) }}</span>
+              <span class="text-xs text-secondary">
+                源版本 ID: {{ link.joining_version_id }}
+              </span>
+              <span v-if="link.description" class="text-xs">{{ link.description }}</span>
+            </div>
+            <ButtonStyled type="transparent" size="standard">
+              <button @click="removeVersionLink(index)">
+                <XIcon />
+              </button>
+            </ButtonStyled>
+          </div>
+        </div>
       </div>
-    </div>
+    </template>
+
+    <!-- 非 language 类型：常规依赖编辑 -->
+    <template v-else>
+      <div class="flex flex-col gap-4">
+        <span class="font-semibold text-contrast">添加依赖</span>
+        <div class="border-surface-5 flex flex-col gap-3 rounded-2xl border border-solid p-4">
+          <div class="grid gap-2.5">
+            <span class="font-semibold text-contrast">项目 <span class="text-red">*</span></span>
+            <ModSelect v-model="newDependencyProjectId" />
+          </div>
+
+          <template v-if="newDependencyProjectId">
+            <div class="grid gap-2.5">
+              <span class="font-semibold text-contrast"> 版本 </span>
+              <Combobox
+                v-model="newDependencyVersionId"
+                placeholder="选择版本"
+                :options="[{ label: '任意版本', value: null }, ...newDependencyVersions]"
+                :searchable="true"
+              />
+            </div>
+
+            <div class="grid gap-2.5">
+              <span class="font-semibold text-contrast"> 依赖关系 </span>
+              <Combobox
+                v-model="newDependencyType"
+                placeholder="选择依赖类型"
+                :options="[
+                  { label: '必需', value: 'required' },
+                  { label: '可选', value: 'optional' },
+                  { label: '不兼容', value: 'incompatible' },
+                  { label: '内嵌', value: 'embedded' },
+                ]"
+              />
+            </div>
+
+            <ButtonStyled>
+              <button
+                class="self-start"
+                :disabled="!newDependencyProjectId"
+                @click="
+                  () =>
+                    addDependency(
+                      toRaw({
+                        project_id: newDependencyProjectId,
+                        version_id: newDependencyVersionId || undefined,
+                        dependency_type: newDependencyType,
+                      }),
+                    )
+                "
+              >
+                添加依赖
+              </button>
+            </ButtonStyled>
+          </template>
+        </div>
+      </div>
+
+      <SuggestedDependencies
+        :suggested-dependencies="suggestedDependencies"
+        @on-add-suggestion="handleAddSuggestedDependency"
+      />
+
+      <div v-if="addedDependencies.length" class="flex flex-col gap-4">
+        <span class="font-semibold text-contrast">已添加的依赖</span>
+        <div class="5 flex flex-col gap-2">
+          <template v-for="(dependency, index) in addedDependencies">
+            <AddedDependencyRow
+              v-if="dependency"
+              :key="index"
+              :project-id="dependency.projectId"
+              :name="dependency.name"
+              :icon="dependency.icon"
+              :dependency-type="dependency.dependencyType"
+              :version-name="dependency.versionName"
+              @remove="() => removeDependency(index)"
+            />
+          </template>
+          <span v-if="!addedDependencies.length"> 尚未添加依赖。 </span>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { Labrinth } from "@modrinth/api-client";
+import { XIcon } from "@modrinth/assets";
 import {
   ButtonStyled,
   Combobox,
@@ -93,7 +167,10 @@ import {
 import type { DropdownOption } from "@modrinth/ui";
 
 import ModSelect from "~/components/ui/create-project-version/components/ModSelect.vue";
-import { injectManageVersionContext } from "~/providers/version/manage-version-modal";
+import {
+  injectManageVersionContext,
+  TRANSLATION_LANGUAGE_OPTIONS,
+} from "~/providers/version/manage-version-modal";
 
 import AddedDependencyRow from "../components/AddedDependencyRow.vue";
 import SuggestedDependencies from "../components/SuggestedDependencies/SuggestedDependencies.vue";
@@ -140,9 +217,66 @@ watch(newDependencyProjectId, async () => {
   }
 });
 
-const { draftVersion, dependencyProjects, dependencyVersions, getProject, getVersion } =
-  injectManageVersionContext();
+const {
+  draftVersion,
+  dependencyProjects,
+  dependencyVersions,
+  getProject,
+  getVersion,
+  isLanguageVersion,
+  addVersionLink,
+  removeVersionLink,
+} = injectManageVersionContext();
 const { projectV2: project } = injectProjectPageContext();
+
+// === BBSMC: 翻译链接编辑 state ===
+const linkTargetId = ref("");
+const linkLanguageCode = ref<string | null>(null);
+const linkDescription = ref("");
+
+const languageOptions = TRANSLATION_LANGUAGE_OPTIONS.map((o) => ({
+  label: o.label,
+  value: o.value,
+}));
+
+const langLabelMap: Record<string, string> = TRANSLATION_LANGUAGE_OPTIONS.reduce(
+  (acc, opt) => {
+    acc[opt.value] = opt.label;
+    return acc;
+  },
+  {} as Record<string, string>,
+);
+function langLabel(code: string) {
+  return langLabelMap[code] || code;
+}
+
+function handleAddVersionLink() {
+  if (!linkTargetId.value || !linkLanguageCode.value) return;
+  // 重复检查
+  const existing = draftVersion.value.version_links ?? [];
+  const dup = existing.find(
+    (l: any) =>
+      l.joining_version_id === linkTargetId.value &&
+      l.language_code === linkLanguageCode.value,
+  );
+  if (dup) {
+    addNotification({
+      title: "已存在",
+      text: "已为该源版本和语言添加过翻译链接。",
+      type: "error",
+    });
+    return;
+  }
+  addVersionLink({
+    joining_version_id: linkTargetId.value,
+    link_type: "translation",
+    language_code: linkLanguageCode.value,
+    description: linkDescription.value || undefined,
+  });
+  linkTargetId.value = "";
+  linkLanguageCode.value = null;
+  linkDescription.value = "";
+}
 
 const getSuggestedDependencies = async () => {
   try {

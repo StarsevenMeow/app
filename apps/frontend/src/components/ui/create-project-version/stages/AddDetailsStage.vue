@@ -24,13 +24,39 @@
     <div class="flex flex-col gap-2">
       <span class="font-semibold text-contrast"> 版本副标题 </span>
       <input
-        id="version-number"
+        id="version-name"
         v-model="draftVersion.name"
         placeholder="输入副标题..."
         type="text"
         autocomplete="off"
         maxlength="32"
       />
+    </div>
+
+    <!-- Changelog 编辑器（旧 add-changelog stage 已合并到此处） -->
+    <div class="flex flex-col gap-2">
+      <span class="font-semibold text-contrast"> 更新日志 </span>
+      <MarkdownEditor
+        :model-value="draftVersion.changelog ?? ''"
+        :disabled="false"
+        :heading-buttons="true"
+        :on-image-upload="onImageUpload"
+        :max-height="320"
+        @update:model-value="(v: string) => (draftVersion.changelog = v)"
+      />
+      <span class="text-xs text-secondary"> 支持 Markdown 语法。 </span>
+    </div>
+
+    <!-- 特色版本切换 -->
+    <div class="flex items-center gap-2">
+      <input
+        id="version-featured"
+        v-model="draftVersion.featured"
+        type="checkbox"
+      />
+      <label for="version-featured" class="cursor-pointer text-sm">
+        将此版本设为特色（在项目页突出显示）
+      </label>
     </div>
 
     <template v-if="!noLoadersProject && (inferredVersionData?.loaders?.length || editingVersion)">
@@ -57,7 +83,7 @@
         >
           <div class="flex flex-wrap gap-2">
             <template
-              v-for="loader in draftVersion.loaders.map((selectedLoader) =>
+              v-for="loader in draftVersion.loaders.map((selectedLoader: string) =>
                 loaders.find((loader) => selectedLoader === loader.name),
               )"
             >
@@ -151,11 +177,17 @@
 
 <script lang="ts" setup>
 import { EditIcon } from "@modrinth/assets";
-import { ButtonStyled, Chips, TagItem } from "@modrinth/ui";
+import { ButtonStyled, Chips, ENVIRONMENTS_COPY, MarkdownEditor, TagItem } from "@modrinth/ui";
 import { formatCategory } from "@modrinth/utils";
 
 import { useTags } from "~/composables/tag";
 import { injectManageVersionContext } from "~/providers/version/manage-version-modal";
+
+// changelog 中插入图片（占位实现，本地若已有上传函数可替换）
+async function onImageUpload(_file: File): Promise<string> {
+  // BBSMC: 暂未对接 changelog 图片上传，返回空字符串占位
+  return "";
+}
 
 const {
   draftVersion,
@@ -186,7 +218,7 @@ const usingDetectedVersions = computed(() => {
 
   const versionsMatch =
     draftVersion.value.game_versions.length === inferredVersionData.value.game_versions.length &&
-    draftVersion.value.game_versions.every((version) =>
+    draftVersion.value.game_versions.every((version: string) =>
       inferredVersionData.value?.game_versions?.includes(version),
     );
 
@@ -198,7 +230,7 @@ const usingDetectedLoaders = computed(() => {
 
   const loadersMatch =
     draftVersion.value.loaders.length === inferredVersionData.value.loaders.length &&
-    draftVersion.value.loaders.every((loader) =>
+    draftVersion.value.loaders.every((loader: string) =>
       inferredVersionData.value?.loaders?.includes(loader),
     );
 
@@ -206,59 +238,18 @@ const usingDetectedLoaders = computed(() => {
 });
 
 const environmentCopy = computed(() => {
-  const emptyMessage = {
-    title: "未设置运行环境",
-    description: "此版本的运行环境尚未指定。",
-  };
-  if (!draftVersion.value.environment) return emptyMessage;
-
-  const envCopy: Record<string, { title: string; description: string }> = {
-    client_only: {
-      title: "仅客户端",
-      description: "所有功能均在客户端运行，兼容原版服务端。",
-    },
-    server_only: {
-      title: "仅服务端",
-      description: "所有功能均在服务端运行，兼容原版客户端。",
-    },
-    singleplayer_only: {
-      title: "仅单人游戏",
-      description: "仅在单人游戏或未连接多人服务器时有效。",
-    },
-    dedicated_server_only: {
-      title: "仅服务端",
-      description: "所有功能均在服务端运行，兼容原版客户端。",
-    },
-    client_and_server: {
-      title: "客户端和服务端",
-      description: "在客户端和服务端均有部分或全部功能。",
-    },
-    client_only_server_optional: {
-      title: "客户端和服务端",
-      description: "在客户端和服务端均有部分或全部功能。",
-    },
-    server_only_client_optional: {
-      title: "客户端和服务端",
-      description: "在客户端和服务端均有部分或全部功能。",
-    },
-    client_or_server: {
-      title: "客户端和服务端",
-      description: "在客户端和服务端均有部分或全部功能。",
-    },
-    client_or_server_prefers_both: {
-      title: "客户端和服务端",
-      description: "在客户端和服务端均有部分或全部功能。",
-    },
-    unknown: {
-      title: "未知环境",
-      description: "无法确定此版本的运行环境。",
-    },
-  };
-
+  const env = draftVersion.value.environment;
+  if (!env) {
+    return {
+      title: "未设置运行环境",
+      description: "此版本的运行环境尚未指定。",
+    };
+  }
+  const copy = (ENVIRONMENTS_COPY as Record<string, { title: string; description: string }>)[env];
   return (
-    envCopy[draftVersion.value.environment] || {
+    copy ?? {
       title: "未知环境",
-      description: `无法识别的运行环境："${draftVersion.value.environment}"。`,
+      description: `无法识别的运行环境："${env}"。`,
     }
   );
 });

@@ -8,13 +8,17 @@ import AddEnvironmentStage from "~/components/ui/create-project-version/stages/A
 export const stageConfig: StageConfigInput<ManageVersionContextValue> = {
   id: "add-environment",
   stageContent: markRaw(AddEnvironmentStage),
-  title: (ctx) => (ctx.editingVersion.value ? "Edit environment" : "Add environment"),
+  title: (ctx) => (ctx.editingVersion.value ? "编辑环境" : "环境"),
+  // BBSMC: 始终显示环境步骤让用户确认/修改（即使已自动推断 / 已有值）
+  // 仅在以下情况跳过：项目本身没有环境概念 / 汉化包 / 软件资源 / 编辑模式
   skip: (ctx) =>
     ctx.noEnvironmentProject.value ||
-    (!ctx.editingVersion.value && !!ctx.inferredVersionData.value?.environment) ||
-    (ctx.editingVersion.value && !!ctx.draftVersion.value.environment),
+    ctx.isLanguageVersion.value ||
+    ctx.draftVersion.value.type === "software" ||
+    ctx.editingVersion.value,
+  cannotNavigateForward: (ctx) => !ctx.draftVersion.value.environment,
   leftButtonConfig: (ctx) => ({
-    label: "Back",
+    label: "返回",
     icon: LeftArrowIcon,
     onClick: () => ctx.modal.value?.prevStage(),
   }),
@@ -30,13 +34,13 @@ export const stageConfig: StageConfigInput<ManageVersionContextValue> = {
 export const fromDetailsStageConfig: StageConfigInput<ManageVersionContextValue> = {
   id: "from-details-environment",
   stageContent: markRaw(AddEnvironmentStage),
-  title: "Edit environment",
+  title: "编辑环境",
   nonProgressStage: true,
   leftButtonConfig: (ctx) => ({
-    label: "Back",
+    label: "返回",
     icon: LeftArrowIcon,
     disabled: !ctx.draftVersion.value.environment,
-    onClick: () => ctx.modal.value?.setStage("add-details"),
+    onClick: () => ctx.modal.value?.setStage("metadata"),
   }),
   rightButtonConfig: (ctx) => ctx.saveButtonConfig(),
 };

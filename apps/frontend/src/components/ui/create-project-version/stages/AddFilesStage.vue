@@ -1,226 +1,92 @@
 <template>
-  <div class="flex w-full flex-col gap-4">
-    <template v-if="!(filesToAdd.length || draftVersion.existing_files?.length)">
-      <DropzoneFileInput
-        aria-label="Upload file"
-        multiple
-        :accept="acceptFileFromProjectType(projectV2.project_type)"
-        :max-size="524288000"
-        @change="handleNewFiles"
-      />
-    </template>
-
-    <template v-else>
-      <div class="flex flex-col gap-2">
-        <span class="text-base font-semibold text-contrast">主文件</span>
-        <div class="flex flex-col gap-2.5">
-          <VersionFileRow
-            v-if="primaryFile"
-            :key="primaryFile.name"
-            :name="primaryFile.name"
-            :is-primary="true"
-            :editing-version="editingVersion"
-            :on-remove="undefined"
-            @set-primary-file="
-              (file) => {
-                if (file && !editingVersion) filesToAdd[0] = { file };
-              }
-            "
-          />
-        </div>
-        <span> 主文件是用户安装项目时默认下载的文件。 </span>
+  <div class="flex w-full flex-col gap-5">
+    <!-- 资源类型选择（强制必选；进入 modal 第一步） -->
+    <div class="flex flex-col gap-2">
+      <span class="text-base font-semibold text-contrast">
+        资源类型 <span class="text-red">*</span>
+      </span>
+      <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <button
+          v-for="opt in versionTypeOptions"
+          :key="opt.value"
+          type="button"
+          class="rounded-xl border border-solid bg-button-bg px-3 py-2.5 text-left text-contrast transition-colors hover:bg-button-bg-hover"
+          :class="
+            draftVersion.type === opt.value
+              ? 'border-brand !text-brand'
+              : 'border-surface-5'
+          "
+          :disabled="editingVersion"
+          @click="handleSelectType(opt.value)"
+        >
+          <div class="font-semibold">{{ opt.label }}</div>
+          <div class="text-xs text-secondary">{{ opt.hint }}</div>
+        </button>
       </div>
+      <span v-if="!draftVersion.type" class="text-xs text-secondary">
+        请先选择资源类型再进入下一步。
+      </span>
+    </div>
 
-      <div class="flex flex-col gap-2">
-        <div class="flex flex-col gap-2">
-          <Admonition v-if="hasSupplementaryFiles" type="warning">
-            {{ formatMessage(messages.addFilesAdmonition) }}
-          </Admonition>
-
-          <span class="text-base font-semibold text-contrast">附属文件</span>
-
-          <DropzoneFileInput
-            aria-label="Upload additional file"
-            multiple
-            :accept="acceptFileFromProjectType(projectV2.project_type)"
-            :max-size="524288000"
-            size="small"
-            :primary-prompt="null"
-            secondary-prompt="拖放文件或点击浏览"
-            @change="handleNewFiles"
-          />
-
-          <div v-if="hasSupplementaryFiles" class="flex flex-col gap-2.5">
-            <VersionFileRow
-              v-for="versionFile in supplementaryExistingFiles"
-              :key="versionFile.filename"
-              :name="versionFile.filename"
-              :is-primary="false"
-              :initial-file-type="versionFile.file_type"
-              :editing-version="editingVersion"
-              :on-remove="() => handleRemoveExistingFile(versionFile.hashes.sha1 || '')"
-              @set-file-type="(type) => (versionFile.file_type = type)"
-            />
-            <VersionFileRow
-              v-for="(versionFile, idx) in supplementaryNewFiles"
-              :key="versionFile.file.name"
-              :name="versionFile.file.name"
-              :is-primary="false"
-              :initial-file-type="versionFile.fileType"
-              :editing-version="editingVersion"
-              :on-remove="() => handleRemoveFile(idx + (primaryFile?.existing ? 0 : 1))"
-              @set-file-type="(type) => (versionFile.fileType = type)"
-              @set-primary-file="handleSetPrimaryFile(idx + (primaryFile?.existing ? 0 : 1))"
-            />
-          </div>
-        </div>
-        <span> 你可以选择性地添加附属文件，例如源代码、文档或必需的资源包。 </span>
-      </div>
-    </template>
+    <Admonition v-if="draftVersion.type === 'language'" type="info">
+      汉化包只能上传 .zip 文件，并在「依赖」步骤添加被翻译的源版本链接。
+    </Admonition>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { Labrinth } from "@modrinth/api-client";
-import { Admonition, DropzoneFileInput, injectProjectPageContext } from "@modrinth/ui";
-import { acceptFileFromProjectType } from "@modrinth/utils";
+import { Admonition, injectProjectPageContext } from "@modrinth/ui";
 
 import { injectManageVersionContext } from "~/providers/version/manage-version-modal";
 
-import VersionFileRow from "../components/VersionFileRow.vue";
-
+const { draftVersion, editingVersion } = injectManageVersionContext();
 const { projectV2 } = injectProjectPageContext();
-const { formatMessage } = useVIntl();
 
-const {
-  draftVersion,
-  filesToAdd,
-  existingFilesToDelete,
-  setPrimaryFile,
-  setInferredVersionData,
-  editingVersion,
-} = injectManageVersionContext();
+const versionTypeOptions = [
+  { value: "minecraft" as const, label: "Minecraft 资源", hint: "模组、资源包、整合包等" },
+  { value: "software" as const, label: "软件资源", hint: "独立运行的软件" },
+  { value: "language" as const, label: "汉化包", hint: "对其他版本的翻译" },
+];
 
-const addDetectedData = async () => {
+const { modal } = injectManageVersionContext();
+
+/**
+ * 根据当前选中的资源类型 + 项目类型重置 loaders（避免切换类型时遗留旧值）
+ * - language → ['language']
+ * - minecraft + resourcepack 项目 → ['minecraft']
+ * - minecraft + modpack 项目 → ['mrpack']
+ * - minecraft + datapack 项目 → ['datapack']
+ * - 其它 → 清空让用户在 loaders 步骤选择
+ */
+function resetLoadersForCurrentType() {
+  const pt = projectV2.value?.project_type;
+  if (draftVersion.value.type === "language") {
+    draftVersion.value.loaders = ["language"];
+  } else if (pt === "resourcepack") {
+    draftVersion.value.loaders = ["minecraft"];
+  } else if (pt === "modpack") {
+    draftVersion.value.loaders = ["mrpack"];
+  } else if (pt === "datapack") {
+    draftVersion.value.loaders = ["datapack"];
+  } else {
+    draftVersion.value.loaders = [];
+  }
+}
+
+function handleSelectType(value: "minecraft" | "software" | "language") {
   if (editingVersion.value) return;
+  const prevType = draftVersion.value.type;
+  draftVersion.value.type = value;
 
-  const primaryFile = filesToAdd.value[0]?.file;
-  if (!primaryFile) return;
-
-  try {
-    const inferredData = await setInferredVersionData(primaryFile, projectV2.value);
-    const mappedInferredData: Partial<Labrinth.Versions.v3.DraftVersion> = {
-      ...inferredData,
-      name: inferredData.name || "",
-    };
-
-    draftVersion.value = {
-      ...draftVersion.value,
-      ...mappedInferredData,
-    };
-  } catch (err) {
-    console.error("Error parsing version file data", err);
+  // 切换到不同类型时清空旧类型的 loaders / game_versions / environment 遗留
+  // 避免：先选汉化包（自动 ['language']）→ 切回 minecraft 时仍残留 ['language']
+  if (prevType !== value) {
+    resetLoadersForCurrentType();
+    draftVersion.value.game_versions = [];
+    draftVersion.value.environment = undefined;
   }
-};
 
-// add detected data when the primary file changes
-watch(
-  () => filesToAdd.value[0]?.file,
-  () => addDetectedData(),
-);
-
-function handleNewFiles(newFiles: File[]) {
-  // detect primary file if no primary file is set
-  const primaryFileIndex = primaryFile.value ? null : detectPrimaryFileIndex(newFiles);
-
-  newFiles.forEach((file) => filesToAdd.value.push({ file }));
-
-  if (primaryFileIndex !== null) {
-    if (primaryFileIndex) setPrimaryFile(primaryFileIndex);
-  }
+  // 选完后自动跳到下一步（上传方式）
+  modal.value?.nextStage();
 }
-
-function handleRemoveFile(index: number) {
-  filesToAdd.value.splice(index, 1);
-}
-
-function detectPrimaryFileIndex(files: File[]): number {
-  const extensionPriority = [".jar", ".zip", ".litemod", ".mrpack", ".mrpack-primary"];
-
-  for (const ext of extensionPriority) {
-    const matches = files.filter((file) => file.name.toLowerCase().endsWith(ext));
-    if (matches.length > 0) {
-      const shortest = matches.reduce((a, b) => (a.name.length < b.name.length ? a : b));
-      return files.indexOf(shortest);
-    }
-  }
-
-  return 0;
-}
-
-function handleRemoveExistingFile(sha1: string) {
-  existingFilesToDelete.value.push(sha1);
-  draftVersion.value.existing_files = draftVersion.value.existing_files?.filter(
-    (file) => file.hashes.sha1 !== sha1,
-  );
-}
-
-function handleSetPrimaryFile(index: number) {
-  setPrimaryFile(index);
-}
-
-interface PrimaryFile {
-  name: string;
-  fileType?: string;
-  existing?: boolean;
-}
-
-const primaryFile = computed<PrimaryFile | null>(() => {
-  const existingPrimaryFile = draftVersion.value.existing_files?.[0];
-  if (existingPrimaryFile) {
-    return {
-      name: existingPrimaryFile.filename,
-      fileType: existingPrimaryFile.file_type,
-      existing: true,
-    };
-  }
-
-  const addedPrimaryFile = filesToAdd.value[0];
-  if (addedPrimaryFile) {
-    return {
-      name: addedPrimaryFile.file.name,
-      fileType: addedPrimaryFile.fileType,
-      existing: false,
-    };
-  }
-
-  return null;
-});
-
-const supplementaryNewFiles = computed(() => {
-  if (primaryFile.value?.existing) {
-    return filesToAdd.value;
-  } else {
-    return filesToAdd.value.slice(1);
-  }
-});
-
-const supplementaryExistingFiles = computed(() => {
-  if (primaryFile.value?.existing) {
-    return draftVersion.value.existing_files?.slice(1);
-  } else {
-    return draftVersion.value.existing_files;
-  }
-});
-
-const hasSupplementaryFiles = computed(
-  () => filesToAdd.value.length + (draftVersion.value.existing_files?.length || 0) > 1,
-);
-
-const messages = defineMessages({
-  addFilesAdmonition: {
-    id: "create-project-version.create-modal.stage.add-files.admonition",
-    defaultMessage: "附属文件用于支持性资源（如源代码），不应用于替代版本或变体。",
-  },
-});
 </script>

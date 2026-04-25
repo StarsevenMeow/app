@@ -3,16 +3,15 @@ import type { StageConfigInput } from "@modrinth/ui";
 import { markRaw } from "vue";
 
 import type { ManageVersionContextValue } from "../manage-version-modal";
-import AddMcVersionsStage from "~/components/ui/create-project-version/stages/AddMcVersionsStage.vue";
+import AddDependenciesStage from "~/components/ui/create-project-version/stages/AddDependenciesStage.vue";
 
 export const stageConfig: StageConfigInput<ManageVersionContextValue> = {
-  id: "add-mc-versions",
-  stageContent: markRaw(AddMcVersionsStage),
-  title: (ctx) => (ctx.editingVersion.value ? "Edit game versions" : "Add game versions"),
-  skip: (ctx) =>
-    (ctx.inferredVersionData.value?.game_versions?.length ?? 0) > 0 || ctx.editingVersion.value,
+  id: "add-dependencies",
+  stageContent: markRaw(AddDependenciesStage),
+  title: (ctx) => (ctx.editingVersion.value ? "编辑依赖" : "依赖"),
+  skip: (ctx) => ctx.noDependenciesProject.value, // modpack 跳过
   leftButtonConfig: (ctx) => ({
-    label: "Back",
+    label: "返回",
     icon: LeftArrowIcon,
     onClick: () => ctx.modal.value?.prevStage(),
   }),
@@ -20,21 +19,19 @@ export const stageConfig: StageConfigInput<ManageVersionContextValue> = {
     label: ctx.getNextLabel(),
     icon: RightArrowIcon,
     iconPosition: "after",
-    disabled: ctx.draftVersion.value.game_versions.length === 0,
     onClick: () => ctx.modal.value?.nextStage(),
   }),
 };
 
 export const fromDetailsStageConfig: StageConfigInput<ManageVersionContextValue> = {
-  id: "from-details-mc-versions",
-  stageContent: markRaw(AddMcVersionsStage),
-  title: "Edit game versions",
+  id: "from-details-dependencies",
+  stageContent: markRaw(AddDependenciesStage),
+  title: "编辑依赖",
   nonProgressStage: true,
   leftButtonConfig: (ctx) => ({
-    label: "Back",
+    label: "返回",
     icon: LeftArrowIcon,
-    disabled: ctx.draftVersion.value.game_versions.length === 0,
-    onClick: () => ctx.modal.value?.setStage("add-details"),
+    onClick: () => ctx.modal.value?.setStage("metadata"),
   }),
   rightButtonConfig: (ctx) => ctx.saveButtonConfig(),
 };
