@@ -104,6 +104,7 @@
           ><LanguagesIcon class="cat-icon" /> 汉化</NuxtLink
         >
         <NuxtLink to="/datapacks" class="cat-chip"><BracesIcon class="cat-icon" /> 数据包</NuxtLink>
+        <NuxtLink to="/maps" class="cat-chip"><CompassIcon class="cat-icon" /> 地图</NuxtLink>
         <NuxtLink to="/softwares" class="cat-chip"><WrenchIcon class="cat-icon" /> 工具</NuxtLink>
       </div>
     </section>
@@ -552,6 +553,7 @@ import {
   GlassesIcon,
   PaintBrushIcon,
   BracesIcon,
+  CompassIcon,
   WrenchIcon,
   LinkIcon,
   HeartIcon,

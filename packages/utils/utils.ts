@@ -383,6 +383,8 @@ export const acceptFileFromProjectType = (projectType) => {
       return '.zip,application/zip'
     case 'modpack':
       return '.mrpack,application/x-modrinth-modpack+zip,application/zip'
+    case 'map':
+      return '.zip,.mcworld,.mctemplate,.schem,.schematic,.litematic,.nbt,.mcstructure,application/zip'
     default:
       return '*'
   }

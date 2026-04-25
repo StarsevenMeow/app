@@ -198,6 +198,8 @@ export const formatProjectType = (name) => {
     return "软件";
   } else if (name === "language") {
     return "汉化";
+  } else if (name === "map") {
+    return "地图";
   }
 
   return capitalizeString(name);
@@ -244,6 +246,8 @@ export const formatCategory = (name) => {
     return "原版光影";
   } else if (name === "language") {
     return "汉化包";
+  } else if (name === "map") {
+    return "地图";
   }
 
   return capitalizeString(name);

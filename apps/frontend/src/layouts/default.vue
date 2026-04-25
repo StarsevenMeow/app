@@ -121,6 +121,16 @@
             <BracesIcon aria-hidden="true" />
             <span>数据包</span>
           </NuxtLink>
+          <NuxtLink
+            to="/maps"
+            class="nav-link"
+            :class="{
+              active: route.name === 'search-maps' || route.path.startsWith('/map/'),
+            }"
+          >
+            <CompassIcon aria-hidden="true" />
+            <span>地图</span>
+          </NuxtLink>
 
           <!-- 论坛模块暂时隐藏
           <NuxtLink
@@ -420,12 +430,14 @@
             <NuxtLink to="/modpacks" class="footer-link">整合包</NuxtLink>
             <NuxtLink to="/shaders" class="footer-link">光影</NuxtLink>
             <NuxtLink to="/resourcepacks" class="footer-link">资源包</NuxtLink>
+            <NuxtLink to="/maps" class="footer-link">地图</NuxtLink>
           </div>
           <div class="footer-column">
             <h4 class="footer-column-title">社区</h4>
             <NuxtLink to="/languages" class="footer-link">汉化</NuxtLink>
             <NuxtLink to="/softwares" class="footer-link">软件</NuxtLink>
             <NuxtLink to="/plugins" class="footer-link">插件</NuxtLink>
+            <NuxtLink to="/datapacks" class="footer-link">数据包</NuxtLink>
           </div>
           <div class="footer-column">
             <h4 class="footer-column-title">帮助</h4>
@@ -512,6 +524,7 @@ import {
   PackageOpenIcon,
   GridIcon,
   LanguagesIcon,
+  CompassIcon,
   ShieldIcon,
   MoonIcon,
   SunIcon,
@@ -731,6 +744,10 @@ const navRoutes = computed(() => [
   {
     label: formatMessage(getProjectTypeMessage("language", true)),
     href: "/languages",
+  },
+  {
+    label: formatMessage(getProjectTypeMessage("map", true)),
+    href: "/maps",
   },
 ]);
 

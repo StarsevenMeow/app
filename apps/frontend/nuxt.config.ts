@@ -225,6 +225,7 @@ export default defineNuxtConfig({
         "datapacks",
         "softwares",
         "languages",
+        "maps",
       ];
 
       types.forEach((type) =>
