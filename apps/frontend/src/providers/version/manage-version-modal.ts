@@ -659,6 +659,23 @@ export function createManageVersionContext(
 
     if (noEnvironmentProject.value) version.environment = undefined;
 
+    // BBSMC: 根据 uploadMode 同步 disk_only / 网盘字段（与 handleVersionCreate 一致）
+    // 用户从"仅站内"切到"站内+网盘"时，前端 uploadMode='both' 但 disk_only 仍保留旧值，
+    // 此处保证发出去的字段与 UI 选择一致；切回"仅站内"时清空网盘 input
+    if (uploadMode.value === "disk") {
+      version.disk_only = true;
+    } else if (uploadMode.value === "local" || uploadMode.value === "both") {
+      version.disk_only = false;
+      if (uploadMode.value === "local") {
+        version.disk_urls = [];
+        version.quark_disk = "";
+        version.xunlei_disk = "";
+        version.baidu_disk = "";
+        version.modrinth = "";
+        version.curseforge = "";
+      }
+    }
+
     try {
       if (!version.version_id) throw new Error("Version ID is required to save edits.");
 
@@ -701,7 +718,9 @@ export function createManageVersionContext(
             file_type: file.file_type ?? null,
           })),
         disk_only: !!version.disk_only,
-        disk_urls: aggregateDiskUrlsFromDraft(version),
+        // BBSMC: 编辑模式下显式以数组（即使为空）发送，避免 null 时后端跳过更新
+        // 导致从"站内+网盘"切到"仅站内"后旧网盘链接残留
+        disk_urls: aggregateDiskUrlsFromDraft(version) ?? [],
       };
 
       if (!skipGameVersions) {
