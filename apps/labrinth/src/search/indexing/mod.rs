@@ -408,13 +408,10 @@ const DEFAULT_DISPLAYED_ATTRIBUTES: &[&str] = &[
     "color",
     // 注意：加载器字段不在这里，但会根据需要添加（因此可以根据存在的字段动态添加）。
     // TODO：删除这些- 因为它们应该被自动填充。这是一个临时解决方案。
-    "server_only",
-    "client_only",
     "game_versions",
-    "singleplayer",
-    "client_and_server",
     "mrpack_loaders",
     "software_loaders",
+    "environment",
     // V2 逻辑一致性字段
     "client_side",
     "server_side",
@@ -457,13 +454,10 @@ const DEFAULT_ATTRIBUTES_FOR_FACETING: &[&str] = &[
     "color",
     // 注意：加载器字段不在这里，但会根据需要添加（因此可以根据存在的字段动态添加）。
     // TODO：删除这些- 因为它们应该被自动填充。这是一个临时解决方案。
-    "server_only",
-    "client_only",
     "game_versions",
-    "singleplayer",
-    "client_and_server",
     "mrpack_loaders",
     "software_loaders",
+    "environment",
     // V2 逻辑一致性字段
     "client_side",
     "server_side",

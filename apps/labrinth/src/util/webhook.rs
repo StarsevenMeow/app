@@ -140,6 +140,9 @@ async fn get_webhook_metadata(
             "modpack" => "整合包",
             "shader" => "光影",
             "plugin" => "插件",
+            "language" => "汉化",
+            "software" => "软件",
+            "map" => "地图",
             _ => &*project_type,
         }
         .to_string();

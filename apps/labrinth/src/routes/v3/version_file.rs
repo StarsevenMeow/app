@@ -614,9 +614,21 @@ pub async fn delete_file(
                 .await?;
         if let Some(version) = version {
             if version.files.len() < 2 {
-                return Err(ApiError::InvalidInput(
-                    "版本必须至少有一个文件上传".to_string(),
-                ));
+                // BBSMC: 当版本已配置网盘下载链接（disk_only 模式）时，
+                // 允许删除最后一个站内文件——版本通过网盘提供下载即可
+                let has_disk_urls = sqlx::query!(
+                    "SELECT 1 AS one FROM disk_urls WHERE version_id = $1 LIMIT 1",
+                    version.inner.id.0
+                )
+                .fetch_optional(&**pool)
+                .await?
+                .is_some();
+
+                if !has_disk_urls {
+                    return Err(ApiError::InvalidInput(
+                        "版本必须至少保留一个站内文件，或配置至少一个网盘下载链接".to_string(),
+                    ));
+                }
             }
 
             database::models::Version::clear_cache(&version, &redis).await?;

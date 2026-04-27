@@ -180,28 +180,28 @@ where
     Ok(new_multipart)
 }
 
-// 将 "client_side" 和 "server_side" 对转换为新的 v3 对应字段
+// 将 "client_side" 和 "server_side" 对转换为 v3 environment 单字段
+// 跟进上游 ef04dcc37：v3 已用 environment 取代旧的 4 个 bool 字段
 pub fn convert_side_types_v3(
     client_side: LegacySideType,
     server_side: LegacySideType,
 ) -> HashMap<String, Value> {
-    use LegacySideType::{Optional, Required};
+    use LegacySideType::{Optional, Required, Unknown, Unsupported};
 
-    let singleplayer = client_side == Required
-        || client_side == Optional
-        || server_side == Required
-        || server_side == Optional;
-    let client_and_server = singleplayer;
-    let client_only = (client_side == Required || client_side == Optional)
-        && server_side != Required;
-    let server_only = (server_side == Required || server_side == Optional)
-        && client_side != Required;
+    let environment = match (client_side, server_side) {
+        (Required, Required) => "client_and_server",
+        (Required, Optional) => "client_only_server_optional",
+        (Required, Unsupported) | (Required, Unknown) => "client_only",
+        (Optional, Required) => "server_only_client_optional",
+        (Optional, Optional) => "client_or_server",
+        (Optional, Unsupported) | (Optional, Unknown) => "client_only",
+        (Unsupported, Required) | (Unknown, Required) => "server_only",
+        (Unsupported, Optional) | (Unknown, Optional) => "server_only",
+        _ => "unknown",
+    };
 
     let mut fields = HashMap::new();
-    fields.insert("singleplayer".to_string(), json!(singleplayer));
-    fields.insert("client_and_server".to_string(), json!(client_and_server));
-    fields.insert("client_only".to_string(), json!(client_only));
-    fields.insert("server_only".to_string(), json!(server_only));
+    fields.insert("environment".to_string(), json!(environment));
     fields
 }
 
@@ -227,77 +227,46 @@ pub fn convert_plugin_loader_facets_v3(
         .collect::<Vec<_>>()
 }
 
-// 将搜索 facets 从 V3 转换回 v2
-// 这不是无损的。（见测试）
+// 将 v3 environment 单字段反向转换为 v2 (client_side, server_side)
+// 跟进上游 ef04dcc37：从 4 字段 bool 改为读 environment 字符串
 pub fn convert_side_types_v2(
     side_types: &HashMap<String, Value>,
     project_type: Option<&str>,
 ) -> (LegacySideType, LegacySideType) {
-    let client_and_server = side_types
-        .get("client_and_server")
-        .and_then(|x| x.as_bool())
-        .unwrap_or(false);
-    let singleplayer = side_types
-        .get("singleplayer")
-        .and_then(|x| x.as_bool())
-        .unwrap_or(client_and_server);
-    let client_only = side_types
-        .get("client_only")
-        .and_then(|x| x.as_bool())
-        .unwrap_or(false);
-    let server_only = side_types
-        .get("server_only")
-        .and_then(|x| x.as_bool())
-        .unwrap_or(false);
-
-    convert_side_types_v2_bools(
-        Some(singleplayer),
-        client_only,
-        server_only,
-        Some(client_and_server),
-        project_type,
-    )
+    let environment = side_types
+        .get("environment")
+        .and_then(|x| x.as_str())
+        .map(|s| s.to_string());
+    convert_side_types_v2_from_env(environment.as_deref(), project_type)
 }
 
-// 客户端，服务器端
-pub fn convert_side_types_v2_bools(
-    singleplayer: Option<bool>,
-    client_only: bool,
-    server_only: bool,
-    client_and_server: Option<bool>,
+// 客户端、服务器端反向派生（v3 environment → v2 client_side/server_side）
+pub fn convert_side_types_v2_from_env(
+    environment: Option<&str>,
     project_type: Option<&str>,
 ) -> (LegacySideType, LegacySideType) {
     use LegacySideType::{Optional, Required, Unknown, Unsupported};
 
+    // 部分项目类型对外固定 side type（上游同样保留这部分硬规则）
     match project_type {
-        Some("plugin") => (Unsupported, Required),
-        Some("datapack") => (Optional, Required),
-        Some("shader") => (Required, Unsupported),
-        Some("resourcepack") => (Required, Unsupported),
-        _ => {
-            let singleplayer =
-                singleplayer.or(client_and_server).unwrap_or(false);
+        Some("plugin") => return (Unsupported, Required),
+        Some("datapack") => return (Optional, Required),
+        Some("shader") => return (Required, Unsupported),
+        Some("resourcepack") => return (Required, Unsupported),
+        _ => {}
+    }
 
-            match (singleplayer, client_only, server_only) {
-                // 仅单人游戏
-                (true, false, false) => (Required, Required),
-
-                // 仅客户端且不为服务器端
-                (false, true, false) => (Required, Unsupported),
-                (true, true, false) => (Required, Unsupported),
-
-                // 仅服务器端且不为客户端
-                (false, false, true) => (Unsupported, Required),
-                (true, false, true) => (Unsupported, Required),
-
-                // 同时为服务器端和客户端
-                (true, true, true) => (Optional, Optional),
-                (false, true, true) => (Optional, Optional),
-
-                // 错误类型
-                (false, false, false) => (Unknown, Unknown),
-            }
-        }
+    match environment.unwrap_or("unknown") {
+        "client_only" => (Required, Unsupported),
+        "server_only" => (Unsupported, Required),
+        "singleplayer_only" => (Required, Required),
+        "dedicated_server_only" => (Unsupported, Required),
+        "client_and_server" => (Required, Required),
+        "client_only_server_optional" => (Required, Optional),
+        "server_only_client_optional" => (Optional, Required),
+        "client_or_server" => (Optional, Optional),
+        "client_or_server_prefers_both" => (Optional, Optional),
+        _ => (Unknown, Unknown),
     }
 }
 

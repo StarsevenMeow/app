@@ -2,7 +2,8 @@
   <div class="space-y-6">
     <LoaderPicker
       v-model="draftVersion.loaders"
-      :loaders="generatedState.loaders"
+      :loaders="loaders"
+      :version-type="(draftVersion.type as 'software' | 'language' | 'minecraft' | null | undefined) ?? null"
       :toggle-loader="toggleLoader"
     />
 
@@ -58,7 +59,7 @@ const { draftVersion } = injectManageVersionContext();
 
 const toggleLoader = (loader: string) => {
   if (draftVersion.value.loaders.includes(loader)) {
-    draftVersion.value.loaders = draftVersion.value.loaders.filter((l) => l !== loader);
+    draftVersion.value.loaders = draftVersion.value.loaders.filter((l: string) => l !== loader);
   } else {
     draftVersion.value.loaders = [...draftVersion.value.loaders, loader];
   }

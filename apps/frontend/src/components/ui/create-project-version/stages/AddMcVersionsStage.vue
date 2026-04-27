@@ -48,7 +48,7 @@ const { draftVersion } = injectManageVersionContext();
 const toggleVersion = (version: string) => {
   if (draftVersion.value.game_versions.includes(version)) {
     draftVersion.value.game_versions = draftVersion.value.game_versions.filter(
-      (v) => v !== version,
+      (v: string) => v !== version,
     );
   } else {
     draftVersion.value.game_versions.push(version);

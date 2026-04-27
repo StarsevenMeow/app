@@ -63,6 +63,14 @@ const projectTypeMessages = defineMessages({
     id: "project-type.language.plural",
     defaultMessage: "汉化",
   },
+  map: {
+    id: "project-type.map.singular",
+    defaultMessage: "地图",
+  },
+  maps: {
+    id: "project-type.map.plural",
+    defaultMessage: "地图",
+  },
   project: {
     id: "project-type.project.singular",
     defaultMessage: "资源",

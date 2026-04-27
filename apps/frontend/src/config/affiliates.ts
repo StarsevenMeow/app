@@ -20,11 +20,6 @@ export interface Affiliate {
  * key: 合作方唯一标识 (用于 URL 参数 aff=xxx)
  */
 export const affiliates: Record<string, Affiliate> = {
-  pcl: {
-    name: "PCL2",
-    link: "https://item.taobao.com/item.htm?ft=t&id=881229604563",
-    projects: ["YJBkhCZM"],
-  },
   wutuobang: {
     name: "乌托邦",
     link: "https://item.taobao.com/item.htm?ft=t&id=876821726196",
@@ -56,11 +51,6 @@ export const affiliates: Record<string, Affiliate> = {
     name: "浙水院Minecraft社",
     link: "https://item.taobao.com/item.htm?ft=t&id=883095512357",
     projects: ["r0WJ4XSq"], // 群峦：重生
-  },
-  luge: {
-    name: "路哥",
-    link: "https://item.taobao.com/item.htm?id=807034865363&sku_properties=122216883%3A27889",
-    projects: ["hICODOh4"], // 植物大战僵尸 畸变帝国
   },
   Unknown_Entity_: {
     name: "Unknown_Entity_",

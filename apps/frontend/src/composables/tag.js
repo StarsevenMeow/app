@@ -53,6 +53,11 @@ export const useTags = () =>
         id: "language",
         display: "汉化资源",
       },
+      {
+        actual: "map",
+        id: "map",
+        display: "地图",
+      },
     ],
     forumTypes: [
       {

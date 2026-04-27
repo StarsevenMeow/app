@@ -352,6 +352,8 @@
           </ProjectCard>
         </div>
       </div>
+      <!-- Google AdSense -->
+<!--      <AdUnit slot="7766138161" format="horizontal" class="mt-4" />-->
       <div class="pagination-after">
         <pagination
           :page="currentPage"
@@ -371,6 +373,7 @@ import { Multiselect } from "vue-multiselect";
 import { Pagination, ScrollablePanel, Checkbox, Avatar } from "@modrinth/ui";
 import { BanIcon, DropdownIcon, CheckIcon, FilterXIcon, DownloadIcon } from "@modrinth/assets";
 import ProjectCard from "~/components/ui/ProjectCard.vue";
+import AdUnit from "~/components/ui/AdUnit.vue";
 import LogoAnimated from "~/components/brand/LogoAnimated.vue";
 import { addNotification } from "~/composables/notifs.js";
 
@@ -944,6 +947,8 @@ const filters = computed(() => {
   if (
     projectType.value.id !== "resourcepack" &&
     projectType.value.id !== "datapack" &&
+    projectType.value.id !== "map" &&
+    projectType.value.id !== "language" &&
     (!server.value ||
       serverOverrideLoaders.value ||
       projectType.value.id === "modpack" ||
@@ -1010,7 +1015,7 @@ const filters = computed(() => {
   }
 
   if (
-    !["resourcepack", "plugin", "shader", "datapack", "software", "language"].includes(
+    !["resourcepack", "plugin", "shader", "datapack", "software", "language", "map"].includes(
       projectType.value.id,
     )
   ) {
@@ -1061,7 +1066,10 @@ const filters = computed(() => {
 
   if (projectType.value.id === "language") {
     return {
+      汉化对象: filteredObj.汉化对象 || [],
       汉化方式: filteredObj.汉化方式 || [],
+      翻译完整度: filteredObj.翻译完整度 || [],
+      翻译来源: filteredObj.翻译来源 || [],
     };
   }
 

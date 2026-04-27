@@ -30,6 +30,8 @@ export const acceptFileFromProjectType = (projectType) => {
       return ".zip,application/zip";
     case "language":
       return ".zip,application/zip";
+    case "map":
+      return ".zip,.mcworld,.mctemplate,.schem,.schematic,.litematic,.nbt,.mcstructure,application/zip";
     default:
       return "*";
   }

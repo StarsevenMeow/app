@@ -11,6 +11,7 @@ export type DisplayLocation =
   | "datapack"
   | "software"
   | "language"
+  | "map"
   | "user"
   | "collection";
 
@@ -52,6 +53,7 @@ export default defineNuxtPlugin({
           datapack: "list",
           software: "gallery",
           language: "gallery",
+          map: "gallery",
           user: "list",
           collection: "list",
         },

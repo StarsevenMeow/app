@@ -1256,12 +1256,9 @@
           @purchase-success="() => router.go(0)"
         />
 
-        <div
-          v-if="project.project_type !== 'language'"
-          class="card flex-card experimental-styles-within"
-        >
+        <div class="card flex-card experimental-styles-within">
           <h2>{{ formatMessage(compatibilityMessages.title) }}</h2>
-          <section>
+          <section v-if="project.project_type !== 'language'">
             <h3>{{ formatMessage(compatibilityMessages.minecraftJava) }}</h3>
             <div class="tag-list">
               <div
@@ -1274,7 +1271,11 @@
             </div>
           </section>
           <section
-            v-if="project.project_type !== 'resourcepack' && project.project_type !== 'language'"
+            v-if="
+              project.project_type !== 'resourcepack' &&
+              project.project_type !== 'language' &&
+              project.project_type !== 'map'
+            "
           >
             <h3>{{ formatMessage(compatibilityMessages.platforms) }}</h3>
             <div class="tag-list">
@@ -1335,6 +1336,21 @@
               >
                 <MonitorSmartphoneIcon aria-hidden="true" />
                 客户端和服务端
+              </div>
+            </div>
+          </section>
+
+          <!-- BBSMC: 按 header 分组的多维分类标签（题材/风格/规模/玩法等，地图项目尤其有用） -->
+          <section v-for="(items, header) in categoriesByHeader" :key="header">
+            <h3>{{ header }}</h3>
+            <div class="tag-list">
+              <div
+                v-for="item in items"
+                :key="`cat-${header}-${item.name}`"
+                class="tag-list__item"
+              >
+                <svg v-if="item.icon" v-html="item.icon"></svg>
+                {{ formatCategory(item.name) }}
               </div>
             </div>
           </section>
@@ -1630,6 +1646,8 @@
             </div>
           </div>
         </div>
+        <!-- Google AdSense -->
+<!--        <AdUnit slot="7766138161" class="card" />-->
       </div>
       <div class="normal-page__content">
         <div class="overflow-x-auto">
@@ -1736,6 +1754,7 @@ import {
   formatDateTime,
 } from "@modrinth/utils";
 import dayjs from "dayjs";
+import AdUnit from "~/components/ui/AdUnit.vue";
 import Badge from "~/components/ui/Badge.vue";
 import NavTabs from "~/components/ui/NavTabs.vue";
 import NavStack from "~/components/ui/NavStack.vue";
@@ -1779,6 +1798,21 @@ const user = await useUser();
 const tags = useTags();
 
 const { formatMessage } = useVIntl();
+
+// 按 header 分组的项目分类（用于"基本信息"区块展示题材/风格/规模/玩法等多维分类）
+const categoriesByHeader = computed(() => {
+  if (!project.value?.categories?.length) return {};
+  const result = {};
+  for (const catName of project.value.categories) {
+    const tag = tags.value.categories.find(
+      (c) => c.name === catName && c.project_type === project.value.actualProjectType,
+    );
+    const header = tag?.header || "分类";
+    if (!result[header]) result[header] = [];
+    result[header].push({ name: catName, icon: tag?.icon });
+  }
+  return result;
+});
 
 const settingsModal = ref();
 const downloadModal = ref();

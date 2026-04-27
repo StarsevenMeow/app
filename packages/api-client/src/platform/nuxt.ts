@@ -74,10 +74,22 @@ export class NuxtModrinthClient extends AbstractModrinthClient {
 
   protected async executeRequest<T>(url: string, options: RequestOptions): Promise<T> {
     try {
+      // 当 body 是 FormData 时，剥离 Content-Type 让浏览器/ofetch 自动设置 multipart boundary。
+      // 否则后端会因收到空的或错误的 Content-Type 而报 "Could not parse Content-Type header"。
+      let headers = options.headers
+      if (options.body instanceof FormData && headers) {
+        const cleaned: Record<string, string> = {}
+        for (const [k, v] of Object.entries(headers)) {
+          if (k.toLowerCase() === 'content-type') continue
+          cleaned[k] = v
+        }
+        headers = cleaned
+      }
+
       // @ts-expect-error - $fetch is provided by Nuxt runtime
       const response = await $fetch<T>(url, {
         method: options.method ?? 'GET',
-        headers: options.headers,
+        headers,
         body: options.body,
         params: options.params,
         timeout: options.timeout,

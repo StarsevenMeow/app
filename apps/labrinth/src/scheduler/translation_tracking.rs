@@ -92,7 +92,7 @@ FTB Quests 是整合包中最主要的任务系统，使用 SNBT 格式存储任
 
 ### 硬编码文本提取
 
-许多模组将物品名称、工具提示等文本直接写死在 Java 代码中，而非使用语言文件。系统通过 CFR 反编译器将模组 class 文件反编译为 Java 源码，然后分析方法签名、类结构和调用上下文，精确定位那些流向 addTooltip、appendText、setCustomName 等渲染方法的字符串。配合 10 个专用模式检测器（NBT、资源路径、JEI/REI、Lore、TextComponent 等）过滤误报，最终生成 VaultPatcher 运行时文本替换配置或 ASM 字节码替换规则。内置 VM 汉化组提供的 2,451 条白名单数据，覆盖 583 个常见类。支持 Forge、NeoForge 和 Fabric 三大加载器，兼容 MC 1.12 到 1.21+。
+许多模组将物品名称、工具提示等文本直接写死在 Java 代码中，而非使用语言文件。系统通过 CFR 反编译器将模组 class 文件反编译为 Java 源码，然后分析方法签名、类结构和调用上下文，精确定位那些流向 addTooltip、appendText、setCustomName 等渲染方法的字符串。配合 10 个专用模式检测器（NBT、资源路径、JEI/REI、Lore、TextComponent 等）过滤误报，最终生成 VaultPatcher 运行时文本替换配置或 ASM 字节码替换规则。支持 Forge、NeoForge 和 Fabric 三大加载器，兼容 MC 1.12 到 1.21+。
 
 ### Patchouli 手册翻译
 

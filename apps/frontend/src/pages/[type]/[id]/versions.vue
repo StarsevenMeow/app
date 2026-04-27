@@ -1,31 +1,19 @@
 <template>
   <section class="experimental-styles-within overflow-visible">
+    <CreateProjectVersionModal ref="createVersionModal" @save="onVersionCreated" />
     <div
       v-if="currentMember && isPermission(currentMember?.permissions, 1 << 0)"
       class="card flex items-center gap-4"
     >
-      <FileInput
-        :max-size="1073741824"
-        :accept="acceptFileFromProjectType(project.project_type)"
-        prompt="上传版本(文件)"
-        class="btn btn-primary"
-        aria-label="上传版本"
-        @change="handleFiles"
-      >
+      <button class="btn btn-primary" aria-label="上传版本" @click="createDiskUrl">
         <UploadIcon aria-hidden="true" />
-      </FileInput>
+        上传版本
+      </button>
       <span class="flex items-center gap-2" style="flex-grow: 1">
-        <!-- 添加 flex-grow 属性让其可占据剩余空间 -->
-        <InfoIcon aria-hidden="true" /> 单击选择文件或将其拖到此页面
+        <InfoIcon aria-hidden="true" />
+        点击"上传版本"打开上传向导，或将文件直接拖入此页面（支持站内文件 / 网盘 / 两者并存）
       </span>
       <DropArea :accept="acceptFileFromProjectType(project.project_type)" @change="handleFiles" />
-
-      <button-styled style="margin-left: auto" @click="createDiskUrl">
-        <button class="btn btn-primary">
-          上传版本(网盘下载方式)
-          <UploadIcon aria-hidden="true" />
-        </button>
-      </button-styled>
     </div>
     <div class="mb-3 flex flex-wrap gap-2">
       <VersionFilterControl
@@ -316,8 +304,8 @@ import {
   OverflowMenu,
   Pagination,
   VersionChannelIndicator,
-  FileInput,
 } from "@modrinth/ui";
+import CreateProjectVersionModal from "~/components/ui/create-project-version/CreateProjectVersionModal.vue";
 import {
   StarIcon,
   CalendarIcon,
@@ -451,25 +439,20 @@ const filteredVersions = computed(() => {
   );
 });
 
+// 新版 modal 入口（替代原跳转旧 [version].vue/create 的逻辑）
+const createVersionModal = ref(null);
+
 async function handleFiles(files) {
-  await router.push({
-    name: "type-id-version-version",
-    params: {
-      type: props.project.project_type,
-      id: props.project.slug ? props.project.slug : props.project.id,
-      version: "create",
-    },
-    state: {
-      newPrimaryFile: files[0],
-    },
-  });
+  if (!files || files.length === 0) return;
+  await createVersionModal.value?.handleDropFiles(Array.from(files));
 }
 async function createDiskUrl() {
-  await router.push(
-    `/${props.project.project_type}/${
-      props.project.slug ? props.project.slug : props.project.id
-    }/version/create`,
-  );
+  await createVersionModal.value?.openCreateVersionModal();
+}
+
+async function onVersionCreated() {
+  // 创建/编辑成功后刷新版本列表
+  await reloadNuxtApp({ ttl: 0 });
 }
 
 async function copyToClipboard(text) {

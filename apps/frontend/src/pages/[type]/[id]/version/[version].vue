@@ -1,5 +1,6 @@
 <template>
   <div v-if="version" class="version-page">
+    <CreateProjectVersionModal ref="editVersionModalRef" @save="onVersionSavedFromModal" />
     <ConfirmModal
       v-if="currentMember"
       ref="modal_confirm"
@@ -264,17 +265,24 @@
             举报反馈
           </button>
         </ButtonStyled>
-        <ButtonStyled>
-          <nuxt-link
-            v-if="currentMember"
-            class="action"
-            :to="`/${project.project_type}/${
-              project.slug ? project.slug : project.id
-            }/version/${encodeURI(version.displayUrlEnding)}/edit`"
-          >
-            <EditIcon aria-hidden="true" />
-            编辑
-          </nuxt-link>
+        <!-- 上游 modrinth 风格三按钮编辑（参考 ed2f04322 PR） -->
+        <ButtonStyled v-if="currentMember">
+          <button class="action" @click="openEditModal('metadata')">
+            <ModBoxIcon aria-hidden="true" />
+            编辑元数据
+          </button>
+        </ButtonStyled>
+        <ButtonStyled v-if="currentMember">
+          <button class="action" @click="openEditModal('add-details')">
+            <ModInfoIcon aria-hidden="true" />
+            编辑详情
+          </button>
+        </ButtonStyled>
+        <ButtonStyled v-if="currentMember">
+          <button class="action" @click="openEditModal('from-details-files')">
+            <ModFileIcon aria-hidden="true" />
+            编辑文件
+          </button>
         </ButtonStyled>
         <ButtonStyled>
           <button v-if="currentMember" @click="$refs.modal_confirm.show()">
@@ -284,6 +292,13 @@
         </ButtonStyled>
       </div>
     </div>
+
+    <MapInstallHint
+      v-if="!isEditing && project.project_type === 'map' && primaryFile"
+      :filename="primaryFile.filename"
+      :categories="project.categories"
+      class="universal-card"
+    />
 
     <div class="version-page__changelog universal-card">
       <h3>更新日志</h3>
@@ -1290,6 +1305,9 @@
 <script>
 import { formatProjectRelease, renderString } from "@modrinth/utils";
 import { ButtonStyled, ConfirmModal, MarkdownEditor, NewModal } from "@modrinth/ui";
+import { BoxIcon as ModBoxIcon, InfoIcon as ModInfoIcon, FileIcon as ModFileIcon } from "@modrinth/assets";
+import CreateProjectVersionModal from "~/components/ui/create-project-version/CreateProjectVersionModal.vue";
+import MapInstallHint from "~/components/ui/MapInstallHint.vue";
 import { Multiselect } from "vue-multiselect";
 import JSZip from "jszip";
 import UploadModal from "@modrinth/ui/src/components/modal/UploadModal.vue";
@@ -1374,6 +1392,10 @@ export default defineNuxtComponent({
     ConfirmModal,
     ButtonStyled,
     TranslationPromo,
+    CreateProjectVersionModal,
+    ModBoxIcon,
+    ModInfoIcon,
+    ModFileIcon,
   },
   props: {
     project: {
@@ -1426,9 +1448,6 @@ export default defineNuxtComponent({
     const tags = useTags();
     const flags = useFeatureFlags();
 
-    const path = route.name.split("-");
-    const mode = path[path.length - 1];
-
     const fileTypes = [
       {
         display: "Required resource pack",
@@ -1463,10 +1482,9 @@ export default defineNuxtComponent({
     // const resubmittingLink = false;
     // const pendingResubmitLink = null;
 
-    if (mode === "edit") {
-      isEditing = true;
-    }
-
+    // 旧 isEditing 单页面编辑模式已被 modal 编辑取代（参考 ed2f04322 PR）
+    // 不再响应 mode === "edit"——/edit 旧 URL 直接落到只读视图。
+    // /create 仍保留旧表单作为 fallback（versions.vue 已不再 push 该路由，但单独访问 URL 时可用）。
     if (route.params.version === "create") {
       isCreating = true;
       isEditing = true;
@@ -1892,10 +1910,8 @@ export default defineNuxtComponent({
   },
   watch: {
     "$route.path"() {
-      const path = this.$route.name.split("-");
-      const mode = path[path.length - 1];
-
-      this.isEditing = mode === "edit" || this.$route.params.version === "create";
+      // 旧 isEditing 单页面模式已退役，仅 create 路由仍走旧表单（兼容直接访问）
+      this.isEditing = this.$route.params.version === "create";
     },
   },
   mounted() {
@@ -1903,6 +1919,31 @@ export default defineNuxtComponent({
   },
   methods: {
     // 导航到汉化包版本页面
+    /**
+     * 上游 modrinth 风格的 modal 编辑入口（参考 ed2f04322 PR）
+     * stageId: 'metadata' | 'add-details' | 'from-details-files'
+     */
+    async openEditModal(stageId) {
+      try {
+        await this.$refs.editVersionModalRef?.openEditVersionModal(
+          this.version.id,
+          this.project.id,
+          stageId,
+        );
+      } catch (err) {
+        console.error("打开编辑 modal 失败：", err);
+      }
+    },
+    /**
+     * modal 保存版本后刷新页面数据（使用 nuxt 内部刷新避免整页 reload 丢失状态）
+     */
+    async onVersionSavedFromModal() {
+      try {
+        await reloadNuxtApp({ ttl: 0 });
+      } catch (err) {
+        console.error("刷新版本数据失败：", err);
+      }
+    },
     navigateToTranslation(translationData) {
       if (translationData && translationData.project && translationData.version) {
         const projectType = translationData.project.project_type;
@@ -2233,13 +2274,13 @@ export default defineNuxtComponent({
               this.$refs.uploading_modal.proceed();
               this.$notify({
                 group: "main",
-                title: `${error.error}`,
-                text: `${error.description}`,
+                title: error?.error || "上传失败",
+                text: error?.description || "文件上传超时或网络错误，请重试",
                 type: "error",
               });
             },
           });
-          // this.$refs.uploading_modal.proceed()
+          this.$refs.uploading_modal.proceed();
         }
 
         const disks = [];
@@ -2342,10 +2383,11 @@ export default defineNuxtComponent({
         );
       } catch (err) {
         console.log(err);
+        this.$refs.uploading_modal?.proceed();
         this.$notify({
           group: "main",
           title: "发生错误",
-          text: err.data.description,
+          text: err?.data?.description || "请求超时或网络错误，请重试",
           type: "error",
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -2860,7 +2902,6 @@ export default defineNuxtComponent({
         link.target_version_id ||
         link.originalVersion?.id ||
         `link_${this.versionLinks.indexOf(link)}`;
-      console.log("getLinkId返回:", id, "for link:", link); // 调试信息
       return id;
     },
   },
