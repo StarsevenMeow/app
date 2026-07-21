@@ -2,13 +2,9 @@
 #[target.'cfg(windows)']
 #rustflags = ["-C", "link-args=/STACK:16777220"]
 
-# 使用 sparse 协议的官方 crates.io 源，提高更新速度和稳定性
-# 注意：不要使用中科大镜像 (mirrors.ustc.edu.cn)，该镜像会返回 404 错误
-[source.crates-io]
-replace-with = "crates-io-sparse"
-
-[source.crates-io-sparse]
-registry = "sparse+https://index.crates.io/"
+# 使用官方 crates.io 源（Cargo 1.68+ 默认使用 sparse 协议）
+# 不要配置任何镜像源，之前的中科大镜像 (mirrors.ustc.edu.cn) 会返回 404 错误
+# 导致 GitHub Actions 构建失败
 
 [net]
 git-fetch-with-cli = true
