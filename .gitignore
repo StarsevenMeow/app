@@ -61,8 +61,12 @@ apps/frontend/.env
 
 .astro
 apps/labrinth/.env
-apps/frontend/.env.example
 apps/labrinth/.env.dev
+
+# 允许 .env.example 文件被跟踪（环境变量模板）
+!.env.example
+!apps/frontend/.env.example
+!apps/labrinth/.env.example
 apps/rust1.82.0_build.tar
 apps/rust_build_tools.tar
 /apps/daedalus_client
