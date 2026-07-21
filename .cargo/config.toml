@@ -1,8 +1,14 @@
 # Windows has stack overflows when calling from Tauri, so we increase compiler size
 [target.'cfg(windows)']
 rustflags = ["-C", "link-args=/STACK:16777220"]
-[source.crates-io]
-replace-with = 'ustc'
 
-[source.ustc]
-registry = 'https://mirrors.ustc.edu.cn/crates.io-index'
+# 使用 sparse 协议的官方 crates.io 源，提高更新速度和稳定性
+# 注意：不要使用中科大镜像 (mirrors.ustc.edu.cn)，该镜像会返回 404 错误
+[source.crates-io]
+replace-with = "crates-io-sparse"
+
+[source.crates-io-sparse]
+registry = "sparse+https://index.crates.io/"
+
+[net]
+git-fetch-with-cli = true
