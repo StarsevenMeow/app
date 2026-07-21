@@ -4,6 +4,9 @@ version = "0.8.9"
 authors = ["Jai A <jaiagr+gpg@pm.me>"]
 edition = "2021"
 
+# 阻止 cargo 向上查找 workspace，因为此包不在根 Cargo.toml 的 workspace.members 中
+[workspace]
+
 [dependencies]
 bytes = "1"
 serde = { version = "1.0", features = ["derive"] }
