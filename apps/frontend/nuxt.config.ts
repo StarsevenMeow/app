@@ -8,7 +8,9 @@ import { globIterate } from "glob";
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import { consola } from "consola";
 
-const STAGING_API_URL = "http://api.bbsmc.org.cn/v2/";
+// 构建时的回退 API 地址，使用 Modrinth 官方 API 防止 GitHub Actions 构建失败
+// 生产环境请通过 .env 的 BROWSER_BASE_URL 配置自定义域名
+const STAGING_API_URL = "https://api.modrinth.com/v2/";
 
 const preloadedFonts = [
   "inter/Inter-Regular.woff2",
