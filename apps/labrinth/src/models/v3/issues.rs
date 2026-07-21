@@ -147,7 +147,7 @@ impl From<QueryIssue> for IssueResponse {
     fn from(issue: QueryIssue) -> Self {
         let mut avatar = issue.inner.author_avatar.unwrap_or_default();
         if avatar.is_empty() {
-            avatar = "https://cdn.bbsmc.net/raw/bbsmc-logo.png".to_string();
+            avatar = "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png".to_string();
         }
 
         IssueResponse {
@@ -186,7 +186,7 @@ impl From<IssueCommentQuery> for CommentResponse {
     fn from(comment: IssueCommentQuery) -> Self {
         let mut avatar = comment.author_avatar.unwrap_or_default();
         if avatar.is_empty() {
-            avatar = "https://cdn.bbsmc.net/raw/bbsmc-logo.png".to_string();
+            avatar = "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png".to_string();
         }
 
         CommentResponse {
@@ -230,7 +230,7 @@ impl From<IssueAssignee> for AssigneeResponse {
         let mut user_avatar = assignee.user_avatar.unwrap_or_default();
         if user_avatar.is_empty() {
             user_avatar =
-                "https://cdn.bbsmc.net/raw/bbsmc-logo.png".to_string();
+                "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png".to_string();
         }
 
         // 注意：这里assigned_by的信息在数据库模型中只有ID，没有详细信息
@@ -245,7 +245,7 @@ impl From<IssueAssignee> for AssigneeResponse {
             assigned_by: UserInfo {
                 id: assignee.assigned_by.into(),
                 username: "".to_string(), // 需要额外查询
-                avatar: "https://cdn.bbsmc.net/raw/bbsmc-logo.png".to_string(),
+                avatar: "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png".to_string(),
             },
         }
     }
@@ -255,7 +255,7 @@ impl From<IssueReply> for ReplyResponse {
     fn from(reply: IssueReply) -> Self {
         let mut avatar = reply.author_avatar.unwrap_or_default();
         if avatar.is_empty() {
-            avatar = "https://cdn.bbsmc.net/raw/bbsmc-logo.png".to_string();
+            avatar = "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png".to_string();
         }
 
         ReplyResponse {

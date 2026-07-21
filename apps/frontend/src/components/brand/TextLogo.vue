@@ -18,9 +18,9 @@ const logoPath = computed(() => {
 
 const api = computed(() => {
   const apiUrl = config.public.apiBaseUrl;
-  if (apiUrl.startsWith("https://bbsmc.net")) {
+  if (apiUrl.startsWith("https://bbsmc.org.cn")) {
     return "prod";
-  } else if (apiUrl.startsWith("https://staging-api.bbsmc.net")) {
+  } else if (apiUrl.startsWith("https://staging-api.bbsmc.org.cn")) {
     return "staging";
   } else if (apiUrl.startsWith("localhost") || apiUrl.startsWith("127.0.0.1")) {
     return "localhost";

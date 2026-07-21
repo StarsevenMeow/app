@@ -597,7 +597,7 @@ useSeoMeta({
       description: collection.value.description,
       username: creator.value.username,
     }),
-  ogImage: collection.value.icon_url ?? "https://cdn.bbsmc.net/raw/placeholder.png",
+  ogImage: collection.value.icon_url ?? "https://cdn.bbsmc.org.cn/raw/placeholder.png",
   robots: collection.value.status === "listed" ? "all" : "noindex",
 });
 

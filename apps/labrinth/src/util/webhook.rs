@@ -319,7 +319,7 @@ pub async fn send_slack_webhook(
                 "elements": [
                     {
                         "type": "image",
-                        "image_url": "https://cdn.bbsmc.net/raw/bbsmc-logo.png",
+                        "image_url": "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png",
                         "alt_text": "BBSMC"
                     },
                     {
@@ -455,7 +455,7 @@ pub async fn send_discord_webhook(
             footer: Some(DiscordEmbedFooter {
                 text: format!("{} 发布于 BBSMC", project.display_project_type),
                 icon_url: Some(
-                    "https://cdn.bbsmc.net/raw/bbsmc-logo.png".to_string(),
+                    "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png".to_string(),
                 ),
             }),
         };
@@ -466,7 +466,7 @@ pub async fn send_discord_webhook(
             .post(&webhook_url)
             .json(&DiscordWebhook {
                 avatar_url: Some(
-                    "https://cdn.bbsmc.net/raw/bbsmc-logo.png".to_string(),
+                    "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png".to_string(),
                 ),
                 username: Some("BBSMC 资源发布".to_string()),
                 embeds: vec![embed],

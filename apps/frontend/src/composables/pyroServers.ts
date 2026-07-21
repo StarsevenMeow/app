@@ -828,7 +828,7 @@ const modules: any = {
         const data = await PyroFetch<General>(`servers/${serverId}`);
         // TODO: temp hack to fix hydration error
         if (data.upstream?.project_id) {
-          const res = await $fetch(`https://api.bbsmc.net/v2/project/${data.upstream.project_id}`);
+          const res = await $fetch(`https://api.bbsmc.org.cn/v2/project/${data.upstream.project_id}`);
           data.project = res as Project;
         }
         if (import.meta.client) {

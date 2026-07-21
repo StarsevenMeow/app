@@ -467,7 +467,7 @@ useSeoMeta({
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: organization.value.icon_url ?? "https://cdn.bbsmc.net/raw/placeholder.png",
+  ogImage: organization.value.icon_url ?? "https://cdn.bbsmc.org.cn/raw/placeholder.png",
 });
 
 useHead({
@@ -480,7 +480,7 @@ useHead({
         name: organization.value.name,
         description: organization.value.description || undefined,
         image: organization.value.icon_url || undefined,
-        url: `https://bbsmc.net/organization/${organization.value.slug || organization.value.id}`,
+        url: `https://bbsmc.org.cn/organization/${organization.value.slug || organization.value.id}`,
       }),
     },
   ],

@@ -859,7 +859,7 @@ useSeoMeta({
   description: () => description.value,
   ogTitle: () => title.value,
   ogDescription: () => description.value,
-  ogImage: () => user.value.avatar_url ?? "https://cdn.bbsmc.net/raw/placeholder.png",
+  ogImage: () => user.value.avatar_url ?? "https://cdn.bbsmc.org.cn/raw/placeholder.png",
 });
 
 useHead({
@@ -875,7 +875,7 @@ useHead({
             name: user.value.username,
             description: user.value.bio || undefined,
             image: user.value.avatar_url || undefined,
-            url: `https://bbsmc.net/user/${user.value.username}`,
+            url: `https://bbsmc.org.cn/user/${user.value.username}`,
           },
         }),
     },

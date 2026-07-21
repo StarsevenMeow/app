@@ -83,7 +83,7 @@ impl From<PostQuery> for PostResponse {
     fn from(post: PostQuery) -> Self {
         let mut avatar = post.user_avatar;
         if avatar.is_empty() {
-            avatar = "https://cdn.bbsmc.net/raw/bbsmc-logo.png".to_string();
+            avatar = "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png".to_string();
         }
         PostResponse {
             post_id: post.id.into(),
@@ -108,7 +108,7 @@ impl From<QueryDiscussion> for ForumResponse {
         let mut avatar = discussion.inner.avatar;
         if avatar.is_none() {
             avatar =
-                Some("https://cdn.bbsmc.net/raw/bbsmc-logo.png".to_string());
+                Some("https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png".to_string());
         }
         ForumResponse {
             id: discussion.inner.id.into(),

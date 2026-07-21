@@ -3,9 +3,9 @@
   <ShortName>BBSMC 模组</ShortName>
   <Description>在 BBSMC 上搜索资源。</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://bbsmc.net/favicon.ico</Image>
-  <Url type="text/html" method="get" template="https://bbsmc.net/mods?q={searchTerms}"/>
+  <Image width="16" height="16" type="image/x-icon">https://bbsmc.org.cn/favicon.ico</Image>
+  <Url type="text/html" method="get" template="https://bbsmc.org.cn/mods?q={searchTerms}"/>
   <Developer>Rinth, Inc.</Developer>
   <Attribution>Rinth, Inc.</Attribution>
-  <moz:SearchForm>https://bbsmc.net/mods</moz:SearchForm>
+  <moz:SearchForm>https://bbsmc.org.cn/mods</moz:SearchForm>
 </OpenSearchDescription>

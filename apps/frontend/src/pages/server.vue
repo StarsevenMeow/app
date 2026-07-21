@@ -183,7 +183,7 @@
               </button>
               <h3 class="qr-modal-title">手机淘宝扫码购买</h3>
               <img
-                src="https://cdn.bbsmc.net/bbsmc/data/QioTNNGG/images/962f1e591f1a8058b28177c11d5ee0c76ecdd01f.png"
+                src="https://cdn.bbsmc.org.cn/bbsmc/data/QioTNNGG/images/962f1e591f1a8058b28177c11d5ee0c76ecdd01f.png"
                 alt="手机淘宝二维码"
                 class="qr-code-image"
               />

@@ -1526,7 +1526,7 @@ pub struct Authorization {
 }
 
 // Init link takes us to GitHub API and calls back to callback endpoint with a code and state
-// http://localhost:8000/auth/init?url=https://bbsmc.net
+// http://localhost:8000/auth/init?url=https://bbsmc.org.cn
 #[get("init")]
 pub async fn init(
     req: HttpRequest,
@@ -1542,7 +1542,7 @@ pub async fn init(
         parse_strings_from_var("ALLOWED_CALLBACK_URLS").unwrap_or_default();
     let domain = url.host_str().ok_or(AuthenticationError::Url)?;
     if !allowed_callback_urls.iter().any(|x| domain.ends_with(x))
-        && domain != "bbsmc.net"
+        && domain != "bbsmc.org.cn"
     {
         return Err(AuthenticationError::Url);
     }
@@ -1690,7 +1690,7 @@ pub async fn auth_callback(
                         email,
                         "已添加身份验证方法",
                         &format!("您现在可以使用 {} 身份验证提供程序登录 BBSMC。", provider.as_str()),
-                        "如果不是您进行的更改，请立即发送电子邮件 (support@bbsmc.net) 联系我们。",
+                        "如果不是您进行的更改，请立即发送电子邮件 (support@bbsmc.org.cn) 联系我们。",
                         None,
                     )?;
                 }
@@ -1751,7 +1751,7 @@ pub async fn auth_callback(
                             let _ = ws_conn.close(None).await;
 
                             return Ok(crate::auth::templates::Success {
-                                icon: user.avatar_url.as_deref().unwrap_or("https://cdn.bbsmc.net/raw/placeholder.svg"),
+                                icon: user.avatar_url.as_deref().unwrap_or("https://cdn.bbsmc.org.cn/raw/placeholder.svg"),
                                 name: &user.username,
                             }.render());
                         }
@@ -1810,7 +1810,7 @@ pub async fn auth_callback(
                     let _ = ws_conn.close(None).await;
 
                     Ok(crate::auth::templates::Success {
-                        icon: user.avatar_url.as_deref().unwrap_or("https://cdn.bbsmc.net/raw/placeholder.svg"),
+                        icon: user.avatar_url.as_deref().unwrap_or("https://cdn.bbsmc.org.cn/raw/placeholder.svg"),
                         name: &user.username,
                     }.render())
                 }
@@ -1893,7 +1893,7 @@ pub async fn delete_auth_provider(
                 "您现在无法使用 {} 身份验证提供程序登录 BBSMC",
                 delete_provider.provider.as_str()
             ),
-            "如果不是您进行的更改，请立即通过电子邮件 (support@bbsmc.net) 联系我们。",
+            "如果不是您进行的更改，请立即通过电子邮件 (support@bbsmc.org.cn) 联系我们。",
             None,
         )?;
     }
@@ -2312,7 +2312,7 @@ pub async fn phone_number_bind(
                 "您的账户手机号已更新为 {}。",
                 phone_number_bind.phone_number
             ),
-            "如果不是您进行的更改，请立即通过我们的电子邮件 (support@bbsmc.net) 联系我们。",
+            "如果不是您进行的更改，请立即通过我们的电子邮件 (support@bbsmc.org.cn) 联系我们。",
             None,
         )?;
     }
@@ -2602,7 +2602,7 @@ pub async fn finish_2fa_flow(
                 email,
                 "已启用双因素身份验证",
                 "登录 BBSMC 时，您现在可以在输入常用的电子邮件地址和密码后，输入由身份验证应用生成的代码。",
-                "如果不是您进行的更改，请立即通过我们的电子邮件(support@bbsmc.net)联系我们。",
+                "如果不是您进行的更改，请立即通过我们的电子邮件(support@bbsmc.org.cn)联系我们。",
                 None,
             )?;
         }
@@ -2699,7 +2699,7 @@ pub async fn remove_2fa(
             email,
             "双因素身份验证已移除",
             "登录 BBSMC 时，您不再需要双因素身份验证即可访问。",
-            "如果不是您进行的更改，请立即通过电子邮件 (support@bbsmc.net) 联系我们。",
+            "如果不是您进行的更改，请立即通过电子邮件 (support@bbsmc.org.cn) 联系我们。",
             None,
         )?;
     }
@@ -2910,7 +2910,7 @@ pub async fn change_password(
             email,
             &format!("密码{}", changed),
             &format!("您的账户密码已{}。", changed),
-            "如果不是您进行的更改，请立即通过我们的电子邮件 (support@bbsmc.net) 联系我们。",
+            "如果不是您进行的更改，请立即通过我们的电子邮件 (support@bbsmc.org.cn) 联系我们。",
             None,
         )?;
     }
@@ -2969,7 +2969,7 @@ pub async fn set_email(
             user_email,
             "邮箱已更改",
             &format!("您的账户邮箱已更新为 {}。", email.email),
-            "如果不是您进行的更改，请立即通过我们的电子邮件 (support@bbsmc.net) 联系我们。",
+            "如果不是您进行的更改，请立即通过我们的电子邮件 (support@bbsmc.org.cn) 联系我们。",
             None,
         )?;
     }

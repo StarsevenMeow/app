@@ -24,7 +24,7 @@ const config = useRuntimeConfig();
 // 直接引用 auth state（不 await，避免 SSR 阻塞）。token 通过 getter 在每次请求时读取最新值。
 const authState = useState<{ token?: string }>("auth", () => ({ token: "" }));
 
-// BBSMC apiBaseUrl 形如 "http://api.bbsmc.net/v2/"，需要去掉 /v\d+/ 后缀
+// BBSMC apiBaseUrl 形如 "http://api.bbsmc.org.cn/v2/"，需要去掉 /v\d+/ 后缀
 // 因为 NuxtModrinthClient 内部会按 version 自己拼接 /v2 或 /v3
 const rawApiBaseUrl = (config.public.apiBaseUrl as string) || "";
 const apiBaseUrl = rawApiBaseUrl.replace(/\/v\d+\/?$/, "/");

@@ -659,7 +659,7 @@ useSeoMeta({
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: props.project.icon_url ?? "https://cdn.bbsmc.net/raw/placeholder.png",
+  ogImage: props.project.icon_url ?? "https://cdn.bbsmc.org.cn/raw/placeholder.png",
 });
 
 if (

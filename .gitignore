@@ -78,3 +78,6 @@ UPSTREAM_SYNC.md
 /docs/paid-plugins-progress.md
 /docs/paid-plugins-design.md
 /.playwright-mcp/
+
+# Local backup files
+backup/

@@ -111,7 +111,7 @@ const downloadUrl = computed(() => primaryFile.value?.url || "");
 
 // 是否是站内下载（CDN 或私有文件）
 const isInternalDownload = computed(() => {
-  return downloadUrl.value.includes("cdn.bbsmc.net") || isPrivateUrl(downloadUrl.value);
+  return downloadUrl.value.includes("cdn.bbsmc.org.cn") || isPrivateUrl(downloadUrl.value);
 });
 
 // 是否是付费下载（私有文件）

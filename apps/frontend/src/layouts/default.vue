@@ -476,21 +476,7 @@
             Modrinth 无从属关系，网站遵循 LGPL 协议开源。
           </p>
           <p class="footer-copyright">
-            © 2019-2026 青岛柒兮网络科技有限公司 |
-            <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">鲁B2-20210590</a> |
-            <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener"
-              >鲁ICP备2021009459号-12</a
-            >
-            |
-            <a
-              href="https://beian.mps.gov.cn/#/query/webSearch?code=37021002001586"
-              target="_blank"
-              rel="noopener"
-              class="police-beian"
-            >
-              <img src="~/assets/images/beian-police.png" alt="公安备案" />
-              鲁公网安备37021002001586号
-            </a>
+            © 2019-2026 BBSMC
           </p>
         </div>
       </div>
@@ -701,7 +687,7 @@ useSeoMeta({
         "以Minecraft我的世界内容为主的中文论坛。面向我的世界玩家、服主、创作者，提供简洁好用的交流讨论和资源分享平台。你可以在这里找到单机游戏、服务器扩展乃至开发辅助种种资源。并且相较于其他论坛，我们外观精致，UI简洁易用，拥有良好的社区氛围，为你带来非同一般的社区体验",
     }),
   ogType: "website",
-  ogImage: "https://cdn.bbsmc.net/raw/bbsmc-logo.png",
+  ogImage: "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png",
   ogUrl: link,
 
   // Twitter
@@ -1502,18 +1488,6 @@ const { cycle: changeTheme } = useTheme();
       &:hover {
         color: var(--color-secondary);
         text-decoration: underline;
-      }
-    }
-
-    .police-beian {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-
-      img {
-        width: 14px;
-        height: 14px;
-        vertical-align: middle;
       }
     }
   }

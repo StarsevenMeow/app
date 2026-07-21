@@ -91,7 +91,7 @@ export const configuredXss = new FilterXSS({
           'i.imgur.com',
           'cdn-raw.modrinth.com',
           'cdn.modrinth.com',
-          'cdn.bbsmc.net',
+          'cdn.bbsmc.org.cn',
           'staging-cdn-raw.modrinth.com',
           'staging-cdn.modrinth.com',
           'github.com',
@@ -147,7 +147,7 @@ export const md = (options = {}) => {
 
       try {
         const url = new URL(href)
-        const allowedHostnames = ['bbsmc.net']
+        const allowedHostnames = ['bbsmc.org.cn']
 
         if (allowedHostnames.includes(url.hostname)) {
           return defaultLinkOpenRenderer(tokens, idx, options, env, self)

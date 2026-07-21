@@ -2547,7 +2547,7 @@ if (!route.name?.startsWith("type-id-settings")) {
     description: () => description.value,
     ogTitle: () => title.value,
     ogDescription: () => description.value,
-    ogImage: () => project.value.icon_url ?? "https://cdn.bbsmc.net/raw/placeholder.png",
+    ogImage: () => project.value.icon_url ?? "https://cdn.bbsmc.org.cn/raw/placeholder.png",
     robots: () =>
       project.value.status === "approved" || project.value.status === "archived"
         ? "all"
@@ -2565,7 +2565,7 @@ if (!route.name?.startsWith("type-id-settings")) {
             name: project.value.title,
             description: project.value.description,
             image: project.value.icon_url || undefined,
-            url: `https://bbsmc.net/${route.params.type}/${project.value.slug || project.value.id}`,
+            url: `https://bbsmc.org.cn/${route.params.type}/${project.value.slug || project.value.id}`,
             applicationCategory: "GameApplication",
             operatingSystem: "Windows, macOS, Linux",
             author: {

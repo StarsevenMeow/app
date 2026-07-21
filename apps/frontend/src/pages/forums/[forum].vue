@@ -206,7 +206,7 @@ useSeoMeta({
   description,
   ogTitle,
   ogDescription: description,
-  ogImage: "https://cdn.bbsmc.net/raw/bbsmc-logo.png",
+  ogImage: "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png",
 });
 
 // 假设这里有一个方法来获取论坛数据

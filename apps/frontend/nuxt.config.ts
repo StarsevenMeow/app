@@ -8,7 +8,7 @@ import { globIterate } from "glob";
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import { consola } from "consola";
 
-const STAGING_API_URL = "http://api.bbsmc.net/v2/";
+const STAGING_API_URL = "http://api.bbsmc.org.cn/v2/";
 
 const preloadedFonts = [
   "inter/Inter-Regular.woff2",
@@ -73,7 +73,7 @@ export default defineNuxtConfig({
         ...preloadedFonts.map((font): object => {
           return {
             rel: "preload",
-            href: `https://cdn.bbsmc.net/raw/fonts/${font}`,
+            href: `https://cdn.bbsmc.org.cn/raw/fonts/${font}`,
             as: "font",
             type: "font/woff2",
             crossorigin: "anonymous",
@@ -176,7 +176,7 @@ export default defineNuxtConfig({
 
       const headers = {
         headers: {
-          "user-agent": "Knossos generator (support@bbsmc.net)",
+          "user-agent": "Knossos generator (support@bbsmc.org.cn)",
         },
       };
 
@@ -240,7 +240,7 @@ export default defineNuxtConfig({
     async "vintl:extendOptions"(opts) {
       opts.locales ??= [];
 
-      const isProduction = getDomain() === "https://bbsmc.net";
+      const isProduction = getDomain() === "https://bbsmc.org.cn";
 
       const resolveCompactNumberDataImport = await (async () => {
         const compactNumberLocales: string[] = [];
@@ -494,9 +494,9 @@ function getDomain() {
     } else if (process.env.VERCEL_URL) {
       return `https://${process.env.VERCEL_URL}`;
     } else if (getApiUrl() === STAGING_API_URL) {
-      return "https://staging.bbsmc.net";
+      return "https://staging.bbsmc.org.cn";
     } else {
-      return "https://bbsmc.net";
+      return "https://bbsmc.org.cn";
     }
   } else {
     const port = process.env.PORT || 3000;

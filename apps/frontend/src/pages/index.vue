@@ -570,7 +570,7 @@ useSeoMeta({
   ogTitle: "BBSMC - 我的世界中文资源社区 | Minecraft 模组、整合包、光影下载",
   ogDescription:
     "BBSMC 是最活跃的 Minecraft 我的世界中文资源社区。提供海量模组、整合包、光影、资源包、数据包和插件的免费下载，支持 Forge、Fabric、NeoForge 等主流加载器。加入百万玩家共同打造最好的中文 Minecraft 内容平台。",
-  ogImage: "https://cdn.bbsmc.net/raw/bbsmc-logo.png",
+  ogImage: "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png",
 });
 
 useHead({
@@ -582,12 +582,12 @@ useHead({
         "@type": "WebSite",
         name: "BBSMC",
         alternateName: "BBSMC 我的世界资源社区",
-        url: "https://bbsmc.net",
+        url: "https://bbsmc.org.cn",
         description:
           "BBSMC 是最活跃的 Minecraft 我的世界中文资源社区，提供模组、整合包、光影、资源包和插件下载。",
         potentialAction: {
           "@type": "SearchAction",
-          target: "https://bbsmc.net/mods?q={search_term_string}",
+          target: "https://bbsmc.org.cn/mods?q={search_term_string}",
           "query-input": "required name=search_term_string",
         },
       }),
@@ -693,7 +693,7 @@ const stats = ref({
 const heroBanners = ref([
   {
     image:
-      "https://cdn.bbsmc.net/bbsmc/data/G23dLUsP/images/e681d996cd07316e12facedd8fb22e9f74ce68a1_350.webp",
+      "https://cdn.bbsmc.org.cn/bbsmc/data/G23dLUsP/images/e681d996cd07316e12facedd8fb22e9f74ce68a1_350.webp",
     title: "剑与王国",
     description: "围绕模拟殖民地与村民招募玩法的深度魔改整合包",
     badge: "热门整合包",
@@ -701,7 +701,7 @@ const heroBanners = ref([
   },
   {
     image:
-      "https://cdn.bbsmc.net/bbsmc/data/EIrkPpcm/images/7d43813f0ff22b6c769e7382d36d5059657e8a94_350.webp",
+      "https://cdn.bbsmc.org.cn/bbsmc/data/EIrkPpcm/images/7d43813f0ff22b6c769e7382d36d5059657e8a94_350.webp",
     title: "龙之冒险：新征程",
     description: "面对众多怪物的冒险之旅，你做好准备了吗？",
     badge: "精选整合包",
@@ -709,7 +709,7 @@ const heroBanners = ref([
   },
   {
     image:
-      "https://cdn.bbsmc.net/bbsmc/data/XMUypeti/images/82d38f228afad3b75202eaf8a148c1318a8cea48_350.webp",
+      "https://cdn.bbsmc.org.cn/bbsmc/data/XMUypeti/images/82d38f228afad3b75202eaf8a148c1318a8cea48_350.webp",
     title: "愚者 - The Fool",
     description: "愚弄、伪装、欺诈，屠龙者终成恶龙。",
     badge: "精选整合包",
@@ -717,7 +717,7 @@ const heroBanners = ref([
   },
   {
     image:
-      "https://cdn.bbsmc.net/bbsmc/data/e11vzqXl/images/346fd8930411f592c94acce68b8290a5266843e3_350.webp",
+      "https://cdn.bbsmc.org.cn/bbsmc/data/e11vzqXl/images/346fd8930411f592c94acce68b8290a5266843e3_350.webp",
     title: "香草纪元:食旅纪行",
     description: "农夫乐事全附属与异界冒险",
     badge: "热门整合包",

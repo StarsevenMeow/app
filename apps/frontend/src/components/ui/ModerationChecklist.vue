@@ -376,7 +376,7 @@ const steps = computed(() =>
         {
           name: "包含无用信息",
           resultingMessage: `## 标题误用
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.2 节，我们要求您将标题限制为项目名称。其他信息，如主题、标签、支持的版本或加载器等，应保存在摘要或描述中。更改项目标题时，请记住还要确保项目 slug（URL）匹配并准确代表您的项目。`,
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.2 节，我们要求您将标题限制为项目名称。其他信息，如主题、标签、支持的版本或加载器等，应保存在摘要或描述中。更改项目标题时，请记住还要确保项目 slug（URL）匹配并准确代表您的项目。`,
         },
       ],
     },
@@ -389,7 +389,7 @@ const steps = computed(() =>
         {
           name: "误用",
           resultingMessage: `## Slug 误用
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.2 节，您的项目 slug（URL）必须准确代表您的项目。`,
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.2 节，您的项目 slug（URL）必须准确代表您的项目。`,
         },
       ],
     },
@@ -406,19 +406,19 @@ const steps = computed(() =>
         {
           name: "不足",
           resultingMessage: `## 摘要不足
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.3 节，您的项目摘要应提供项目的简要概述，以告知和吸引用户。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.3 节，您的项目摘要应提供项目的简要概述，以告知和吸引用户。
 这是大多数人除了 Logo 之外看到的关于您的模组的第一件事，因此它必须准确、合理详细且令人兴奋。`,
         },
         {
           name: "重复标题",
           resultingMessage: `## 摘要不足
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.3 节，您的摘要不能与项目标题相同。您的项目摘要应提供项目的简要概述，以告知和吸引用户。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.3 节，您的摘要不能与项目标题相同。您的项目摘要应提供项目的简要概述，以告知和吸引用户。
 这是大多数人除了 Logo 之外看到的关于您的模组的第一件事，因此它必须准确、合理详细且令人兴奋。`,
         },
         {
           name: "格式化",
           resultingMessage: `## 摘要不足
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.3 节，您的摘要不能包含任何额外的格式，如列表或链接。您的项目摘要应提供项目的简要概述，以告知和吸引用户。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.3 节，您的摘要不能包含任何额外的格式，如列表或链接。您的项目摘要应提供项目的简要概述，以告知和吸引用户。
 这是大多数人除了 Logo 之外看到的关于您的模组的第一件事，因此它必须准确、合理详细且令人兴奋。`,
         },
       ],
@@ -438,7 +438,7 @@ const steps = computed(() =>
         {
           name: "不足",
           resultingMessage: `## 描述不足
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#general-expectations) 第 2.1 节，您的项目描述应清楚地告知读者项目的内容、目的和吸引力。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#general-expectations) 第 2.1 节，您的项目描述应清楚地告知读者项目的内容、目的和吸引力。
 目前，看起来有一些缺失的细节。
 %EXPLAINER%`,
           fillers: [
@@ -452,46 +452,46 @@ const steps = computed(() =>
         {
           name: "不足（默认包）",
           resultingMessage: `## 描述不足
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#general-expectations) 第 2.1 节，您的项目描述应清楚地告知读者项目的内容、目的和吸引力。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#general-expectations) 第 2.1 节，您的项目描述应清楚地告知读者项目的内容、目的和吸引力。
 目前，看起来有一些缺失的细节。
 您的模组包添加了什么？它有哪些功能？为什么用户会想下载它？请具体说明！
-请参阅 [Simply Optimized](https://bbsmc.net/modpack/sop) 或 [Aged](https://bbsmc.net/modpack/aged) 的描述示例，了解良好描述的样子。
+请参阅 [Simply Optimized](https://bbsmc.org.cn/modpack/sop) 或 [Aged](https://bbsmc.org.cn/modpack/aged) 的描述示例，了解良好描述的样子。
 `,
         },
         {
           name: "不足（默认项目）",
           resultingMessage: `## 描述不足
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#general-expectations) 第 2.1 节，您的项目描述应清楚地告知读者项目的内容、目的和吸引力。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#general-expectations) 第 2.1 节，您的项目描述应清楚地告知读者项目的内容、目的和吸引力。
 目前，看起来有一些缺失的细节。
 您的项目添加了什么？它有哪些功能？为什么用户会想下载它？请具体说明！
-请参阅 [Sodium](https://bbsmc.net/mod/sodium) 或 [LambDynamicLights](https://bbsmc.net/mod/lambdynamiclights) 的描述示例，了解良好描述的样子。
+请参阅 [Sodium](https://bbsmc.org.cn/mod/sodium) 或 [LambDynamicLights](https://bbsmc.org.cn/mod/lambdynamiclights) 的描述示例，了解良好描述的样子。
 `,
         },
         {
           name: "非英文",
           resultingMessage: `## 没有英文描述
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#accessibility) 第 2.2 节，项目的摘要和描述必须是英文的，除非专门用于非英文使用，如翻译。您可以包含非英文描述，但我们要求您也在描述页面添加英文翻译，如果您想使用在线翻译器，我们推荐 [DeepL](https://www.deepl.com/translator)。`,
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#accessibility) 第 2.2 节，项目的摘要和描述必须是英文的，除非专门用于非英文使用，如翻译。您可以包含非英文描述，但我们要求您也在描述页面添加英文翻译，如果您想使用在线翻译器，我们推荐 [DeepL](https://www.deepl.com/translator)。`,
         },
         {
           name: "未完成",
           resultingMessage: `## 描述未完成
-看起来您的项目描述仍在进行中，因为 %REASON%。请记住只有在准备好时提交，因为您的项目必须符合 [BBSMC 内容规则](https://bbsmc.net/legal/rules#general-expectations) 第 2.1 节的要求，如果您对此有任何疑问，请随时联系我们！`,
+看起来您的项目描述仍在进行中，因为 %REASON%。请记住只有在准备好时提交，因为您的项目必须符合 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#general-expectations) 第 2.1 节的要求，如果您对此有任何疑问，请随时联系我们！`,
         },
         {
           name: "标题作为正文",
           resultingMessage: `## 描述可访问性
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules) 第 2.2 节，我们要求不要将 \`# 标题\` 用作正文。标题在屏幕阅读器中的解释不同，因此通常只应用于分隔描述的部分。如果您想强调特定的句子或段落，请考虑使用 \`**粗体**\` 文本，使用文本编辑器上方的 **B** 按钮。`,
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules) 第 2.2 节，我们要求不要将 \`# 标题\` 用作正文。标题在屏幕阅读器中的解释不同，因此通常只应用于分隔描述的部分。如果您想强调特定的句子或段落，请考虑使用 \`**粗体**\` 文本，使用文本编辑器上方的 **B** 按钮。`,
         },
         {
           name: "仅图像",
           resultingMessage: `## 图像描述
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules) 第 2.2 节，我们要求您为当前描述提供文本替代。您的描述应包含足够的项目详细信息，以便用户仅通过文本即可全面了解它。文本转录允许使用屏幕阅读器的用户和无法加载图像的慢速互联网用户访问描述内容。这也作为备份，以防描述中的图像因某种原因离线。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules) 第 2.2 节，我们要求您为当前描述提供文本替代。您的描述应包含足够的项目详细信息，以便用户仅通过文本即可全面了解它。文本转录允许使用屏幕阅读器的用户和无法加载图像的慢速互联网用户访问描述内容。这也作为备份，以防描述中的图像因某种原因离线。
 我们感谢您在描述中付出的努力，但可访问性对我们来说很重要，如果您愿意，您可以将描述的转录完全放在 \`details\` 标签中，以免破坏描述的视觉效果。`,
         },
         {
           name: "非标准文本",
           resultingMessage: `## 描述可访问性
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#clear-and-honest-function) 第 2 节，您的描述必须清晰可读且易于访问。使用非标准文本字符，如 Zalgo 或“花哨文本”代替文本，可能会使您的项目页面无法访问。这对依赖屏幕阅读器的用户和搜索引擎提供相关结果非常重要。请删除此类文本的任何实例。`,
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#clear-and-honest-function) 第 2 节，您的描述必须清晰可读且易于访问。使用非标准文本字符，如 Zalgo 或“花哨文本”代替文本，可能会使您的项目页面无法访问。这对依赖屏幕阅读器的用户和搜索引擎提供相关结果非常重要。请删除此类文本的任何实例。`,
         },
       ],
     },
@@ -512,18 +512,18 @@ const steps = computed(() =>
         {
           name: "链接被误用",
           resultingMessage: `## 外部资源误用
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.4 节，所有链接必须指向正确标记的公开可用资源，并且与您的项目直接相关。`,
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.4 节，所有链接必须指向正确标记的公开可用资源，并且与您的项目直接相关。`,
         },
         {
           name: "不可访问（源）",
           resultingMessage: `## 链接不可访问
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.4 节，所有链接必须指向正确标记的公开可用资源，并且与您的项目直接相关。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.4 节，所有链接必须指向正确标记的公开可用资源，并且与您的项目直接相关。
 目前，您的源链接指向“页面未找到”错误，可能是因为您的存储库是私有的，请确保在重新提交项目之前将存储库设为公开！`,
         },
         {
           name: "不可访问（其他）",
           resultingMessage: `## 链接不可访问
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.4 节，所有链接必须指向正确标记的公开可用资源，并且与您的项目直接相关。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.4 节，所有链接必须指向正确标记的公开可用资源，并且与您的项目直接相关。
 目前，您的 %LINK% 链接不可访问！`,
           fillers: [
             {
@@ -542,7 +542,7 @@ const steps = computed(() =>
         {
           name: "不准确",
           resultingMessage: `## 标签误用
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.1 节，项目的元数据必须准确。包括所选标签诚实地代表您的项目。`,
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.1 节，项目的元数据必须准确。包括所选标签诚实地代表您的项目。`,
         },
       ],
     },
@@ -554,20 +554,20 @@ const steps = computed(() =>
         {
           name: "不准确（模组包）",
           resultingMessage: `## 环境信息不正确
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.1 节，项目的元数据必须准确，包括项目在客户端或服务器端运行。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.1 节，项目的元数据必须准确，包括项目在客户端或服务器端运行。
 简要介绍如下：
-一些模组包可以是客户端的，通常旨在提供实用程序和优化，同时允许玩家加入未修改的服务器，例如 [Fabulously Optimized](https://bbsmc.net/modpack/fabulously-optimized)。
-大多数其他改变游戏玩法的模组包将在客户端和服务器上都需要，例如模组包 [Dying Light](https://bbsmc.net/modpack/dying-light)。
+一些模组包可以是客户端的，通常旨在提供实用程序和优化，同时允许玩家加入未修改的服务器，例如 [Fabulously Optimized](https://bbsmc.org.cn/modpack/fabulously-optimized)。
+大多数其他改变游戏玩法的模组包将在客户端和服务器上都需要，例如模组包 [Dying Light](https://bbsmc.org.cn/modpack/dying-light)。
 如有疑问，请自行测试或检查包中模组的要求。`,
         },
         {
           name: "不准确（模组）",
           resultingMessage: `## 环境信息
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.1 节，项目的元数据必须准确，包括项目在客户端或服务器端运行。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.1 节，项目的元数据必须准确，包括项目在客户端或服务器端运行。
 简要介绍如下：
-**客户端** 指仅客户端需要的模组，例如 [Sodium](https://bbsmc.net/mod/sodium)。
-**服务器端** 模组更改服务器的行为，而无需客户端需要模组，例如数据包、配方或服务器端行为，例如 [Falling Tree](https://bbsmc.net/mod/fallingtree)。
-添加功能、实体或新方块和物品的模组，通常在 **客户端和服务器** 上都需要，例如 [Cobblemon](https://bbsmc.net/mod/cobblemon)。`,
+**客户端** 指仅客户端需要的模组，例如 [Sodium](https://bbsmc.org.cn/mod/sodium)。
+**服务器端** 模组更改服务器的行为，而无需客户端需要模组，例如数据包、配方或服务器端行为，例如 [Falling Tree](https://bbsmc.org.cn/mod/fallingtree)。
+添加功能、实体或新方块和物品的模组，通常在 **客户端和服务器** 上都需要，例如 [Cobblemon](https://bbsmc.org.cn/mod/cobblemon)。`,
         },
       ],
     },
@@ -580,7 +580,7 @@ const steps = computed(() =>
         {
           name: "不相关",
           resultingMessage: `## 无关的画廊图片
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.5 节，项目画廊中的任何图片必须与项目相关，并且包含标题。`,
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.5 节，项目画廊中的任何图片必须与项目相关，并且包含标题。`,
         },
       ],
     },
@@ -597,7 +597,7 @@ const steps = computed(() =>
         {
           name: "额外文件不正确",
           resultingMessage: `## 额外文件使用不正确
-看起来您已将多个 \`mod.jar\` 文件作为额外文件上传到一个版本。根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules#miscellaneous) 第 5.7 节，每个版本的项目必须仅包含一个 \`mod.jar\`，对应其各自的 Minecraft 和加载器版本。这使用户可以轻松找到并下载他们所需版本的文件。额外文件功能可用于诸如 \`Sources.jar\` 之类的内容。
+看起来您已将多个 \`mod.jar\` 文件作为额外文件上传到一个版本。根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules#miscellaneous) 第 5.7 节，每个版本的项目必须仅包含一个 \`mod.jar\`，对应其各自的 Minecraft 和加载器版本。这使用户可以轻松找到并下载他们所需版本的文件。额外文件功能可用于诸如 \`Sources.jar\` 之类的内容。
 请分别上传每个版本的模组，谢谢。`,
         },
         {
@@ -625,7 +625,7 @@ const steps = computed(() =>
           name: "重新上传",
           resultingMessage: `## 禁止重新上传
 该项目似乎包含 %ORIGINAL_PROJECT% 的内容，由 %ORIGINAL_AUTHOR% 创建。
-根据 [BBSMC 内容规则](https://bbsmc.net/legal/rules) 第 4 节，这是严格禁止的。
+根据 [BBSMC 内容规则](https://bbsmc.org.cn/legal/rules) 第 4 节，这是严格禁止的。
 如果您认为这是一个错误，或者您可以验证您是此内容的创建者和合法所有者，请告知我们。否则，我们要求您 **不要重新提交此项目**。`,
           fillers: [
             {

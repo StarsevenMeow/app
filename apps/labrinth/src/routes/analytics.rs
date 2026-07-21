@@ -71,9 +71,9 @@ pub async fn page_view_ingest(
     let allowed_origins =
         parse_strings_from_var("CORS_ALLOWED_ORIGINS").unwrap_or_default();
 
-    if !(domain.ends_with(".bbsmc.net")
+    if !(domain.ends_with(".bbsmc.org.cn")
         || domain.ends_with("localhost")
-        || domain == "bbsmc.net"
+        || domain == "bbsmc.org.cn"
         || allowed_origins.contains(&"*".to_string()))
     {
         println!("无效的 URL: {}", domain);

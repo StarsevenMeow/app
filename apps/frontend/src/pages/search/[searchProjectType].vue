@@ -397,28 +397,28 @@ const bannerItemsConfig = ref({
   modpack: [
     {
       image:
-        "https://cdn.bbsmc.net/bbsmc/data/G23dLUsP/images/e681d996cd07316e12facedd8fb22e9f74ce68a1_350.webp",
+        "https://cdn.bbsmc.org.cn/bbsmc/data/G23dLUsP/images/e681d996cd07316e12facedd8fb22e9f74ce68a1_350.webp",
       title: "剑与王国",
       description: "围绕模拟殖民地与村民招募玩法的深度魔改整合包",
       slug: "/modpack/snk",
     },
     {
       image:
-        "https://cdn.bbsmc.net/bbsmc/data/EIrkPpcm/images/7d43813f0ff22b6c769e7382d36d5059657e8a94_350.webp",
+        "https://cdn.bbsmc.org.cn/bbsmc/data/EIrkPpcm/images/7d43813f0ff22b6c769e7382d36d5059657e8a94_350.webp",
       title: "龙之冒险：新征程",
       description: "面对众多怪物的冒险之旅，你做好准备了吗？",
       slug: "/modpack/lzmx",
     },
     {
       image:
-        "https://cdn.bbsmc.net/bbsmc/data/XMUypeti/images/82d38f228afad3b75202eaf8a148c1318a8cea48_350.webp",
+        "https://cdn.bbsmc.org.cn/bbsmc/data/XMUypeti/images/82d38f228afad3b75202eaf8a148c1318a8cea48_350.webp",
       title: "愚者 - The Fool",
       description: "愚弄、伪装、欺诈，屠龙者终成恶龙。",
       slug: "/modpack/the-fool",
     },
     {
       image:
-        "https://cdn.bbsmc.net/bbsmc/data/e11vzqXl/images/346fd8930411f592c94acce68b8290a5266843e3_350.webp",
+        "https://cdn.bbsmc.org.cn/bbsmc/data/e11vzqXl/images/346fd8930411f592c94acce68b8290a5266843e3_350.webp",
       title: "香草纪元:食旅纪行 ",
       description: "农夫乐事全附属与异界冒险",
       slug: "/modpack/vefc",
@@ -509,7 +509,7 @@ useSeoMeta({
   description,
   ogTitle,
   ogDescription: description,
-  ogImage: "https://cdn.bbsmc.net/raw/bbsmc-logo.png",
+  ogImage: "https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png",
 });
 
 if (route.query.q) {

@@ -43,7 +43,7 @@ fn get_description_part2() -> &'static str {
 
 此汉化包为覆盖文件类型，需要将压缩包内的所有文件解压后覆盖到游戏运行目录中。
 
-**[>>> 点击查看图文安装教程 <<<](https://bbsmc.net/install-tutorial)**
+**[>>> 点击查看图文安装教程 <<<](https://bbsmc.org.cn/install-tutorial)**
 
 ### 安装步骤
 

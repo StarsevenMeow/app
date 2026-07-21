@@ -238,7 +238,7 @@
       <div v-else class="input-group">
         <ButtonStyled v-if="primaryFile" color="green">
           <!--          <a-->
-          <!--            v-if="primaryFile.url.includes('cdn.bbsmc.net')"-->
+          <!--            v-if="primaryFile.url.includes('cdn.bbsmc.org.cn')"-->
           <!--            v-tooltip="primaryFile.filename + ' (' + $formatBytes(primaryFile.size) + ')'"-->
           <!--            :href="primaryFile.url"-->
           <!--            @click="emit('onDownload')"-->
@@ -919,7 +919,7 @@
         isEditing ||
         isCreating ||
         version.files.filter(
-          (x) => x.url.includes('cdn.bbsmc.net') || x.url.startsWith('private://'),
+          (x) => x.url.includes('cdn.bbsmc.org.cn') || x.url.startsWith('private://'),
         ).length > 0
       "
       class="version-page__files universal-card"
@@ -947,7 +947,7 @@
       <!--      非编辑-->
       <div
         v-for="(file, index) in version.files.filter(
-          (x) => x.url.includes('cdn.bbsmc.net') || x.url.startsWith('private://'),
+          (x) => x.url.includes('cdn.bbsmc.org.cn') || x.url.startsWith('private://'),
         )"
         :key="file.hashes.sha1"
         :class="{
@@ -955,7 +955,7 @@
           primary: primaryFile.hashes.sha1 === file.hashes.sha1,
         }"
       >
-        <!--        <div v-if="file.url.includes('cdn.bbsmc.net')">-->
+        <!--        <div v-if="file.url.includes('cdn.bbsmc.org.cn')">-->
         <!--          -->
         <!--        </div>-->
         <FileIcon aria-hidden="true" />
@@ -1011,7 +1011,7 @@
         <ButtonStyled v-else>
           <!-- CDN 文件直接下载 -->
           <a
-            v-if="file.url.includes('cdn.bbsmc.net')"
+            v-if="file.url.includes('cdn.bbsmc.org.cn')"
             :href="file.url"
             class="raised-button"
             :title="`Download ${file.filename}`"
@@ -1810,7 +1810,7 @@ export default defineNuxtComponent({
       description,
       ogTitle: title,
       ogDescription: description,
-      ogImage: () => props.project.icon_url ?? "https://cdn.bbsmc.net/raw/placeholder.png",
+      ogImage: () => props.project.icon_url ?? "https://cdn.bbsmc.org.cn/raw/placeholder.png",
       robots: isCreating ? "noindex, nofollow" : undefined,
     });
 

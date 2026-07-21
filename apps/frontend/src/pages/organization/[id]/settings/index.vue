@@ -164,7 +164,7 @@ const onDeleteOrganization = useClientTry(async () => {
         <span class="label__title">主页</span>
       </label>
       <div class="text-input-wrapper">
-        <div class="text-input-wrapper__before">https://bbsmc.net/organization/</div>
+        <div class="text-input-wrapper__before">https://bbsmc.org.cn/organization/</div>
         <input
           id="project-slug"
           v-model="slug"

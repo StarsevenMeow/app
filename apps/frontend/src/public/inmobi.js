@@ -1,5 +1,5 @@
 (function () {
-  var host = "bbsmc.net";
+  var host = "bbsmc.org.cn";
   // var host = window.location.hostname;
   var element = document.createElement("script");
   var firstScript = document.getElementsByTagName("script")[0];

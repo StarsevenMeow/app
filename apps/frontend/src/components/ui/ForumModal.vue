@@ -37,7 +37,7 @@
               <img
                 :src="
                   post.user_avatar === ''
-                    ? 'https://cdn.bbsmc.net/raw/bbsmc-logo.png'
+                    ? 'https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png'
                     : post.user_avatar
                 "
                 :alt="post.user_name"
@@ -66,7 +66,7 @@
             <img
               :src="
                 post.reply_content.user_avatar === ''
-                  ? 'https://cdn.bbsmc.net/raw/bbsmc-logo.png'
+                  ? 'https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png'
                   : post.reply_content.user_avatar
               "
               :alt="post.reply_content.user_name"
@@ -93,7 +93,7 @@
             <img
               :src="
                 post.reply_content.user_avatar === ''
-                  ? 'https://cdn.bbsmc.net/raw/bbsmc-logo.png'
+                  ? 'https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png'
                   : post.reply_content.user_avatar
               "
               :alt="post.reply_content.user_name"
@@ -217,7 +217,7 @@
         <img
           :src="
             previewPost.user_avatar === ''
-              ? 'https://cdn.bbsmc.net/raw/bbsmc-logo.png'
+              ? 'https://cdn.bbsmc.org.cn/raw/bbsmc-logo.png'
               : previewPost.user_avatar
           "
           :alt="previewPost.user_name"

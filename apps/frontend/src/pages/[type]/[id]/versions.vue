@@ -203,7 +203,7 @@
                     id: 'copy-link',
                     action: () =>
                       copyToClipboard(
-                        `https://bbsmc.net/${project.project_type}/${
+                        `https://bbsmc.org.cn/${project.project_type}/${
                           project.slug ? project.slug : project.id
                         }/version/${encodeURI(version.displayUrlEnding)}`,
                       ),
@@ -369,7 +369,7 @@ useSeoMeta({
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: props.project.icon_url ?? "https://cdn.bbsmc.net/raw/placeholder.png",
+  ogImage: props.project.icon_url ?? "https://cdn.bbsmc.org.cn/raw/placeholder.png",
 });
 
 const currentPage = ref(route.query.page ?? 1);
@@ -409,7 +409,7 @@ function switchPage(page) {
 //       return url.url;
 //     }
 //   }
-//   return "https://bbsmc.net";
+//   return "https://bbsmc.org.cn";
 // }
 
 const selectedGameVersions = computed(() => {

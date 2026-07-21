@@ -12,20 +12,20 @@ export default {
     },
     requestUrl: {
       type: String,
-      default: "https://captcha.bbsmc.net/gen",
+      default: "https://captcha.bbsmc.org.cn/gen",
     },
     validUrl: {
       type: String,
-      default: "https://captcha.bbsmc.net/validation",
+      default: "https://captcha.bbsmc.org.cn/validation",
     },
     sdkUrl: {
       type: String,
-      default: "https://captcha.bbsmc.net/sdk/tac",
+      default: "https://captcha.bbsmc.org.cn/sdk/tac",
     },
     logoUrl: {
       type: String,
       default:
-        "https://cdn.bbsmc.net/bbsmc/data/ZcUCcMEr/317f155094c061b70526b21f83619037a4a962e7.png",
+        "https://cdn.bbsmc.org.cn/bbsmc/data/ZcUCcMEr/317f155094c061b70526b21f83619037a4a962e7.png",
     },
     // 是否显示遮罩层
     showOverlay: {

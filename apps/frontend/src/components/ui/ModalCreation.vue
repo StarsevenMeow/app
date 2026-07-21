@@ -27,7 +27,7 @@
           <span>请输入英文名,不可使用空格，特殊符号仅可使用 - 例如 ABC-FWAI-AF</span>
         </label>
         <div class="text-input-wrapper">
-          <div class="text-input-wrapper__before">https://bbsmc.net/project/</div>
+          <div class="text-input-wrapper__before">https://bbsmc.org.cn/project/</div>
           <input
             id="slug"
             v-model="slug"

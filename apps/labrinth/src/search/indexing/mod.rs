@@ -123,17 +123,17 @@ pub async fn index_projects(
     // uploads.iter().for_each(|upload| {
     //     let type_ = upload.project_types.first();
     //     let url1 = format!(
-    //         "https://bbsmc.net/{}/{}",
+    //         "https://bbsmc.org.cn/{}/{}",
     //         type_.unwrap_or(&"project".to_string()).to_string(),
     //         &upload.project_id
     //     );
     //     let url2 = format!(
-    //         "https://bbsmc.net/{}/{}/changelog",
+    //         "https://bbsmc.org.cn/{}/{}/changelog",
     //         type_.unwrap_or(&"project".to_string()).to_string(),
     //         &upload.project_id
     //     );
     //     let url = format!(
-    //         "https://bbsmc.net/{}/{}/version/{}",
+    //         "https://bbsmc.org.cn/{}/{}/version/{}",
     //         type_.unwrap_or(&"project".to_string()).to_string(),
     //         &upload.project_id,
     //         &upload.version_id
@@ -157,11 +157,11 @@ pub async fn index_projects(
 
 async fn _submit_urls(urls: Vec<String>) -> Result<(), Box<dyn Error>> {
     // let urls = vec![
-    //     "https://bbsmc.net/modpack/snk",
-    //     "https://bbsmc.net/modpack/utopia-journey",
+    //     "https://bbsmc.org.cn/modpack/snk",
+    //     "https://bbsmc.org.cn/modpack/utopia-journey",
     // ];
 
-    let api = "http://data.zz.baidu.com/urls?site=https://bbsmc.net&token=";
+    let api = "http://data.zz.baidu.com/urls?site=https://bbsmc.org.cn&token=";
     let body = urls.join("\n");
 
     let client = reqwest::Client::new();

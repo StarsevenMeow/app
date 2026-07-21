@@ -160,7 +160,7 @@
     <p>如有版权相关问题，请通过以下方式联系我们：</p>
     <ul>
       <li>邮箱：<a href="mailto:18922569@qq.com">18922569@qq.com</a></li>
-      <li>网站：<a href="https://bbsmc.net" target="_blank">bbsmc.net</a></li>
+      <li>网站：<a href="https://bbsmc.org.cn" target="_blank">bbsmc.org.cn</a></li>
     </ul>
     <p>我们将在收到投诉后的3个工作日内（国家法定节假日顺延）予以回复。</p>
   </div>

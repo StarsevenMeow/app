@@ -26,7 +26,7 @@
           </span>
         </label>
         <div class="text-input-wrapper">
-          <div class="text-input-wrapper__before">https://bbsmc.net/organization/</div>
+          <div class="text-input-wrapper__before">https://bbsmc.org.cn/organization/</div>
           <input
             id="slug"
             v-model="slug"

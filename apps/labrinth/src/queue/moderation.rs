@@ -54,7 +54,7 @@ impl ModerationMessages {
 
         if auto_mod {
             str.push_str("<hr />\n\n");
-            str.push_str("🤖 这是由自动审核系统 (AutoMod BETA) 生成的消息。如果您遇到问题，请通过邮件 support@bbsmc.net 联系我们。");
+            str.push_str("🤖 这是由自动审核系统 (AutoMod BETA) 生成的消息。如果您遇到问题，请通过邮件 support@bbsmc.org.cn 联系我们。");
         }
 
         str
@@ -146,7 +146,7 @@ impl ModerationMessage {
             ModerationMessage::NoPrimaryFile => "请为此版本附加一个文件。所有项目的版本都必须关联至少一个文件。\n".to_string(),
             ModerationMessage::PackFilesNotAllowed { files, .. } => {
                 let mut str = "".to_string();
-                str.push_str("此整合包重新分发了受版权保护的内容。请参阅[内容规则](https://bbsmc.net/legal/rules)了解更多信息。\n\n");
+                str.push_str("此整合包重新分发了受版权保护的内容。请参阅[内容规则](https://bbsmc.org.cn/legal/rules)了解更多信息。\n\n");
 
                 let mut attribute_mods = Vec::new();
                 let mut no_mods = Vec::new();
@@ -181,7 +181,7 @@ impl ModerationMessage {
                         };
 
                         val.push_str(&if let Some(additional_text) = additional_text {
-                            format!("- {project}（建议使用 [{additional_text}](https://bbsmc.net/mod/{}) 替代）\n", additional_text.to_lowercase())
+                            format!("- {project}（建议使用 [{additional_text}](https://bbsmc.org.cn/mod/{}) 替代）\n", additional_text.to_lowercase())
                         } else {
                             format!("- {project}\n")
                         })
@@ -199,8 +199,8 @@ impl ModerationMessage {
 
                 str
             },
-            ModerationMessage::MissingGalleryImage => "我们要求资源包在「图库」中上传展示图片（也可以在「简介」中展示），以便清晰有效地向用户展示您的资源包内容，详见[内容规则](https://bbsmc.net/legal/rules#general-expectations) 2.1 节。\n\n请注意以下事项：\n\n- 设置一张最能代表您资源包的精选图片。\n- 确保所有图片都有准确的标题，并可选择在图片描述中提供详细说明。\n- 建议将简介中的相关图片也上传到「图库」标签中以获得最佳展示效果。".to_string(),
-            ModerationMessage::MissingLicense => "您的项目必须先选择一个许可证才能公开发布。设置许可证对于保护您的权益以及让他人按照您的意愿使用您的内容非常重要。更多信息请参阅[内容规则](https://bbsmc.net/legal/rules)。".to_string(),
+            ModerationMessage::MissingGalleryImage => "我们要求资源包在「图库」中上传展示图片（也可以在「简介」中展示），以便清晰有效地向用户展示您的资源包内容，详见[内容规则](https://bbsmc.org.cn/legal/rules#general-expectations) 2.1 节。\n\n请注意以下事项：\n\n- 设置一张最能代表您资源包的精选图片。\n- 确保所有图片都有准确的标题，并可选择在图片描述中提供详细说明。\n- 建议将简介中的相关图片也上传到「图库」标签中以获得最佳展示效果。".to_string(),
+            ModerationMessage::MissingLicense => "您的项目必须先选择一个许可证才能公开发布。设置许可证对于保护您的权益以及让他人按照您的意愿使用您的内容非常重要。更多信息请参阅[内容规则](https://bbsmc.org.cn/legal/rules)。".to_string(),
             ModerationMessage::MissingCustomLicenseUrl { license } => format!("您选择了许可证 \"{license}\"，但未提供有效的许可证链接。使用自定义许可证时，您必须在许可证链接字段中提供指向该许可证的直接链接。"),
             ModerationMessage::NoSideTypes => "您的项目的运行环境目前两端均设置为「未知」。请设置准确的运行环境类型！".to_string(),
         }
